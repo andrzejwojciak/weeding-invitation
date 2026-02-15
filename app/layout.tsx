@@ -18,6 +18,28 @@ export const metadata: Metadata = {
   title: "Wedding Invitation - Sofiia & Andrzej",
   description:
     "You're invited to celebrate the wedding of Sofiia Havrilchenko and Andrzej Wójciak on June 13, 2026",
+  openGraph: {
+    title: "Wedding Invitation - Sofiia & Andrzej",
+    description:
+      "You're invited to celebrate the wedding of Sofiia Havrilchenko and Andrzej Wójciak on June 13, 2026",
+    images: [
+      {
+        url: "/preview.png",
+        width: 1200,
+        height: 630,
+        alt: "Wedding Invitation - Sofiia & Andrzej",
+      },
+    ],
+    type: "website",
+    siteName: "Wedding Invitation",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Wedding Invitation - Sofiia & Andrzej",
+    description:
+      "You're invited to celebrate the wedding of Sofiia Havrilchenko and Andrzej Wójciak on June 13, 2026",
+    images: ["/preview.png"],
+  },
 };
 
 export default function RootLayout({
