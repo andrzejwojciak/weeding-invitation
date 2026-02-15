@@ -8,19 +8,54 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  --font-sans: var(--font-inter);
+  --font-serif: var(--font-playfair);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  /* Navy colors */
+  --color-navy-50: #f0f4f8;
+  --color-navy-100: #d9e2ec;
+  --color-navy-200: #bcccdc;
+  --color-navy-300: #9fb3c8;
+  --color-navy-400: #829ab1;
+  --color-navy-500: #627d98;
+  --color-navy-600: #486581;
+  --color-navy-700: #334e68;
+  --color-navy-800: #243b53;
+  --color-navy-900: #1e293b;
+
+  /* Burgundy/Wine colors */
+  --color-burgundy-50: #fdf2f4;
+  --color-burgundy-100: #fce7eb;
+  --color-burgundy-200: #fad1d9;
+  --color-burgundy-300: #f7a9b8;
+  --color-burgundy-400: #f27490;
+  --color-burgundy-500: #e74c6c;
+  --color-burgundy-600: #d1315a;
+  --color-burgundy-700: #b02449;
+  --color-burgundy-800: #931f42;
+  --color-burgundy-900: #7d1d3d;
+
+  /* Cream colors */
+  --color-cream-50: #fefdfb;
+  --color-cream-100: #fdfaf5;
+  --color-cream-200: #fbf5ea;
+  --color-cream-300: #f8edda;
+  --color-cream-400: #f5e5ca;
+  --color-cream-500: #f0d9b5;
+  --color-cream-600: #d4b896;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-inter), system-ui, sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-playfair), Georgia, serif;
 }
