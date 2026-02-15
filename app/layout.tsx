@@ -15,6 +15,9 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000",
+  ),
   title: "Wedding Invitation - Sofiia & Andrzej",
   description:
     "You're invited to celebrate the wedding of Sofiia Havrilchenko and Andrzej Wójciak on June 13, 2026",
