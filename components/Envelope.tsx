@@ -87,9 +87,10 @@ export default function Envelope({ onOpen, recipientName }: EnvelopeProps) {
                 x: ["-100%", "100%"],
               }}
               transition={{
-                duration: 2,
+                duration: 1.2,
                 repeat: Infinity,
-                repeatDelay: 3,
+                repeatDelay: 1.5,
+                ease: "easeInOut",
               }}
             />
           </div>
