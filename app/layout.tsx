@@ -29,7 +29,7 @@ export const metadata: Metadata = {
       {
         url: "/preview.png",
         width: 1200,
-        height: 630,
+        height: 633,
         alt: "Wedding Invitation - Sofiia & Andrzej",
       },
     ],
