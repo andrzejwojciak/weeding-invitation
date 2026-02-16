@@ -1,7 +1,14 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Copy, Plus, CheckCircle, XCircle, RefreshCw } from "lucide-react";
+import {
+  Copy,
+  Plus,
+  CheckCircle,
+  XCircle,
+  RefreshCw,
+  Trash2,
+} from "lucide-react";
 import type { Invitation } from "@/lib/types/invitation";
 
 export default function AdminPage() {
@@ -95,6 +102,36 @@ export default function AdminPage() {
     navigator.clipboard.writeText(url);
     setCopiedSlug(slug);
     setTimeout(() => setCopiedSlug(null), 2000);
+  };
+
+  const handleDeleteInvitation = async (
+    slug: string,
+    recipientName: string,
+  ) => {
+    if (
+      !confirm(
+        `Are you sure you want to delete the invitation for ${recipientName}?`,
+      )
+    ) {
+      return;
+    }
+
+    try {
+      const response = await fetch(`/api/invitations/${slug}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${secretKey}`,
+        },
+      });
+
+      if (response.ok) {
+        await fetchInvitations();
+      } else {
+        setError("Failed to delete invitation");
+      }
+    } catch {
+      setError("Failed to delete invitation");
+    }
   };
 
   if (!authenticated) {
@@ -253,15 +290,29 @@ export default function AdminPage() {
                         )}
                       </td>
                       <td className="py-3 px-4 text-right">
-                        <button
-                          onClick={() => copyInvitationLink(invitation.slug)}
-                          className="inline-flex items-center gap-2 px-4 py-2 bg-navy-600 text-white rounded-lg hover:bg-navy-700 transition-colors text-sm font-medium"
-                        >
-                          <Copy size={16} />
-                          {copiedSlug === invitation.slug
-                            ? "Copied!"
-                            : "Copy Link"}
-                        </button>
+                        <div className="flex gap-2 justify-end">
+                          <button
+                            onClick={() => copyInvitationLink(invitation.slug)}
+                            className="inline-flex items-center gap-2 px-4 py-2 bg-navy-600 text-white rounded-lg hover:bg-navy-700 transition-colors text-sm font-medium"
+                          >
+                            <Copy size={16} />
+                            {copiedSlug === invitation.slug
+                              ? "Copied!"
+                              : "Copy Link"}
+                          </button>
+                          <button
+                            onClick={() =>
+                              handleDeleteInvitation(
+                                invitation.slug,
+                                invitation.recipientName,
+                              )
+                            }
+                            className="inline-flex items-center gap-2 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors text-sm font-medium"
+                            title="Delete invitation"
+                          >
+                            <Trash2 size={16} />
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   ))
