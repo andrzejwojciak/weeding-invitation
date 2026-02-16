@@ -11,8 +11,8 @@ import {
   QrCode,
   ExternalLink,
 } from "lucide-react";
-import { weddingConfig, getCoupleNames } from "@/lib/config/wedding";
-import { getTranslation, type Language } from "@/lib/i18n/locales";
+import { weddingConfig } from "@/lib/config/wedding";
+import { getTranslation, formatDate, type Language } from "@/lib/i18n/locales";
 import type { EditableWeddingConfig } from "@/lib/types/wedding-config";
 
 interface BoardingPassProps {
@@ -38,7 +38,14 @@ export default function BoardingPass({
   const ceremonyData = config?.ceremony || weddingConfig.ceremony;
   const receptionData = config?.reception || weddingConfig.reception;
   const coupleData = config?.couple || weddingConfig.couple;
+  const dateData = config?.date || weddingConfig.date;
   const qrCode = config?.telegramQrCode;
+
+  // Format couple names
+  const coupleNames = `${coupleData.bride.fullName} & ${coupleData.groom.fullName}`;
+
+  // Format date using i18n function
+  const weddingDate = formatDate(dateData.year, dateData.month, dateData.day, language);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-navy-900 via-navy-800 to-slate-800 flex items-center justify-center p-4 py-12">
@@ -61,10 +68,10 @@ export default function BoardingPass({
               </div>
             </div>
             <h1 className="text-3xl md:text-4xl font-serif text-center my-4">
-              {getCoupleNames("full")}
+              {coupleNames}
             </h1>
             <div className="text-center text-sm tracking-wide opacity-90">
-              {t.dates.weddingDate}
+              {weddingDate}
             </div>
           </div>
 

@@ -52,6 +52,11 @@ export class WeddingConfigService {
           address: defaultConfig.reception.address,
           googleMapsUrl: "https://maps.google.com/?q=Dragon's+Keep+Ballroom",
         },
+        date: {
+          year: defaultConfig.date.year,
+          month: defaultConfig.date.month,
+          day: defaultConfig.date.day,
+        },
       };
     }
   }

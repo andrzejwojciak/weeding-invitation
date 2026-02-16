@@ -24,5 +24,10 @@ export interface EditableWeddingConfig {
     address: string;
     googleMapsUrl: string;
   };
+  date: {
+    year: number;
+    month: number; // 1-12
+    day: number;
+  };
   telegramQrCode?: string; // base64 or URL
 }

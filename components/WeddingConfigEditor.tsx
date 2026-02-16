@@ -271,6 +271,85 @@ export default function WeddingConfigEditor({
           </div>
         </div>
 
+        {/* Wedding Date */}
+        <div className="space-y-4 border-t pt-6">
+          <h3 className="font-semibold text-lg text-navy-900">
+            Wedding Date
+          </h3>
+          <div className="grid grid-cols-3 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Day
+              </label>
+              <select
+                value={config.date.day}
+                onChange={(e) =>
+                  setConfig({
+                    ...config,
+                    date: { ...config.date, day: parseInt(e.target.value) },
+                  })
+                }
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-navy-500 focus:border-transparent bg-white"
+              >
+                {Array.from({ length: 31 }, (_, i) => i + 1).map((day) => (
+                  <option key={day} value={day}>
+                    {day}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Month
+              </label>
+              <select
+                value={config.date.month}
+                onChange={(e) =>
+                  setConfig({
+                    ...config,
+                    date: { ...config.date, month: parseInt(e.target.value) },
+                  })
+                }
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-navy-500 focus:border-transparent bg-white"
+              >
+                <option value={1}>January</option>
+                <option value={2}>February</option>
+                <option value={3}>March</option>
+                <option value={4}>April</option>
+                <option value={5}>May</option>
+                <option value={6}>June</option>
+                <option value={7}>July</option>
+                <option value={8}>August</option>
+                <option value={9}>September</option>
+                <option value={10}>October</option>
+                <option value={11}>November</option>
+                <option value={12}>December</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Year
+              </label>
+              <select
+                value={config.date.year}
+                onChange={(e) =>
+                  setConfig({
+                    ...config,
+                    date: { ...config.date, year: parseInt(e.target.value) },
+                  })
+                }
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-navy-500 focus:border-transparent bg-white"
+              >
+                {Array.from({ length: 10 }, (_, i) => 2026 + i).map((year) => (
+                  <option key={year} value={year}>
+                    {year}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+        </div>
+
         {/* Ceremony */}
         <div className="space-y-4 border-t pt-6">
           <h3 className="font-semibold text-lg text-navy-900">

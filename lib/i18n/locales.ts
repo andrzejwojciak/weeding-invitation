@@ -248,3 +248,19 @@ export const languages: { code: Language; name: string; flag: string }[] = [
 export function getTranslation(lang: Language): TranslationKeys {
   return translations[lang] || translations.en;
 }
+
+export function formatDate(year: number, month: number, day: number, language: Language): string {
+  const monthNames = {
+    en: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+    pl: ['stycznia', 'lutego', 'marca', 'kwietnia', 'maja', 'czerwca', 'lipca', 'sierpnia', 'września', 'października', 'listopada', 'grudnia'],
+    uk: ['січня', 'лютого', 'березня', 'квітня', 'травня', 'червня', 'липня', 'серпня', 'вересня', 'жовтня', 'листопада', 'грудня']
+  };
+
+  const monthName = monthNames[language][month - 1];
+  
+  if (language === 'en') {
+    return `${monthName} ${day}, ${year}`;
+  } else {
+    return `${day} ${monthName} ${year}`;
+  }
+}
