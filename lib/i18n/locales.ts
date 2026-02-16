@@ -37,6 +37,8 @@ export interface TranslationKeys {
     boardingTime: string;
     seat: string;
     gate: string;
+    scanToJoin: string;
+    chatGroup: string;
   };
   // Admin Panel
   admin: {
@@ -98,6 +100,8 @@ export const translations: Record<Language, TranslationKeys> = {
       boardingTime: "Gates open 30 min before ceremony",
       seat: "Seat",
       gate: "Gate",
+      scanToJoin: "Scan to join",
+      chatGroup: "Chat Group",
     },
     admin: {
       title: "Wedding Invitations Admin",
@@ -156,6 +160,8 @@ export const translations: Record<Language, TranslationKeys> = {
       boardingTime: "Bramki otwarte 30 min przed ceremonią",
       seat: "Miejsce",
       gate: "Bramka",
+      scanToJoin: "Zeskanuj, aby dołączyć",
+      chatGroup: "Grupa czatu",
     },
     admin: {
       title: "Panel Zarządzania Zaproszeniami",
@@ -214,6 +220,8 @@ export const translations: Record<Language, TranslationKeys> = {
       boardingTime: "Вхід відкритий за 30 хв до церемонії",
       seat: "Місце",
       gate: "Ворота",
+      scanToJoin: "Скануйте, щоб приєднатися",
+      chatGroup: "Група чату",
     },
     admin: {
       title: "Панель управління запрошеннями",

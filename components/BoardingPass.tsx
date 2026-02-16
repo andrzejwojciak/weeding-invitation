@@ -35,17 +35,104 @@ export default function BoardingPass({
   }, []);
 
   // Use custom config or fallback to default
-  const ceremonyData = config?.ceremony || weddingConfig.ceremony;
-  const receptionData = config?.reception || weddingConfig.reception;
-  const coupleData = config?.couple || weddingConfig.couple;
+  const ceremonyConfig = config?.ceremony;
+  const receptionConfig = config?.reception;
+  const coupleConfig = config?.couple;
   const dateData = config?.date || weddingConfig.date;
-  const qrCode = config?.telegramQrCode;
+  const qrCode = config?.groupQrCode?.[language];
+
+  // Get localized couple data
+  const coupleData = coupleConfig
+    ? {
+        bride: {
+          firstName:
+            coupleConfig.bride[language]?.firstName ||
+            coupleConfig.bride.en?.firstName ||
+            "",
+          fullName:
+            coupleConfig.bride[language]?.fullName ||
+            coupleConfig.bride.en?.fullName ||
+            "",
+          phone:
+            coupleConfig.bride[language]?.phone ||
+            coupleConfig.bride.en?.phone ||
+            "",
+        },
+        groom: {
+          firstName:
+            coupleConfig.groom[language]?.firstName ||
+            coupleConfig.groom.en?.firstName ||
+            "",
+          fullName:
+            coupleConfig.groom[language]?.fullName ||
+            coupleConfig.groom.en?.fullName ||
+            "",
+          phone:
+            coupleConfig.groom[language]?.phone ||
+            coupleConfig.groom.en?.phone ||
+            "",
+        },
+      }
+    : {
+        bride: {
+          firstName: weddingConfig.couple.bride.firstName,
+          fullName: weddingConfig.couple.bride.fullName,
+          phone: weddingConfig.couple.bride.phone,
+        },
+        groom: {
+          firstName: weddingConfig.couple.groom.firstName,
+          fullName: weddingConfig.couple.groom.fullName,
+          phone: weddingConfig.couple.groom.phone,
+        },
+      };
+
+  // Get localized ceremony and reception data
+  const ceremonyData = ceremonyConfig
+    ? {
+        time: ceremonyConfig.time,
+        googleMapsUrl: ceremonyConfig.googleMapsUrl,
+        locationName:
+          ceremonyConfig[language]?.locationName ||
+          ceremonyConfig.en?.locationName ||
+          "",
+        address:
+          ceremonyConfig[language]?.address || ceremonyConfig.en?.address || "",
+      }
+    : {
+        time: weddingConfig.ceremony.time,
+        googleMapsUrl: "",
+        locationName: weddingConfig.ceremony.locationName,
+        address: weddingConfig.ceremony.address,
+      };
+
+  const receptionData = receptionConfig
+    ? {
+        googleMapsUrl: receptionConfig.googleMapsUrl,
+        locationName:
+          receptionConfig[language]?.locationName ||
+          receptionConfig.en?.locationName ||
+          "",
+        address:
+          receptionConfig[language]?.address ||
+          receptionConfig.en?.address ||
+          "",
+      }
+    : {
+        googleMapsUrl: "",
+        locationName: weddingConfig.reception.locationName,
+        address: weddingConfig.reception.address,
+      };
 
   // Format couple names
   const coupleNames = `${coupleData.bride.fullName} & ${coupleData.groom.fullName}`;
 
   // Format date using i18n function
-  const weddingDate = formatDate(dateData.year, dateData.month, dateData.day, language);
+  const weddingDate = formatDate(
+    dateData.year,
+    dateData.month,
+    dateData.day,
+    language,
+  );
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-navy-900 via-navy-800 to-slate-800 flex items-center justify-center p-4 py-12">
@@ -230,7 +317,7 @@ export default function BoardingPass({
                   {qrCode ? (
                     <img
                       src={qrCode}
-                      alt="Telegram QR Code"
+                      alt="Chat Group QR Code"
                       className="w-full h-full object-contain"
                     />
                   ) : (
@@ -238,9 +325,11 @@ export default function BoardingPass({
                   )}
                 </div>
                 <div className="text-xs text-gray-600 font-medium">
-                  Scan to join
+                  {t.boardingPass.scanToJoin}
                 </div>
-                <div className="text-xs text-gray-600">Telegram Group</div>
+                <div className="text-xs text-gray-600">
+                  {t.boardingPass.chatGroup}
+                </div>
               </div>
 
               {/* Barcode */}

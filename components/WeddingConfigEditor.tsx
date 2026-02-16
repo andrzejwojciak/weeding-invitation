@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { Save, Upload, X, MapPin } from "lucide-react";
 import type { EditableWeddingConfig } from "@/lib/types/wedding-config";
+import type { Language } from "@/lib/i18n/locales";
 
 interface WeddingConfigEditorProps {
   secretKey: string;
@@ -20,6 +21,7 @@ export default function WeddingConfigEditor({
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
+  const [selectedLang, setSelectedLang] = useState<Language>("en");
 
   useEffect(() => {
     fetchConfig();
@@ -35,6 +37,227 @@ export default function WeddingConfigEditor({
 
       if (response.ok) {
         const data = await response.json();
+
+        // Migrate old config to new structure
+        if (!data.couple) {
+          data.couple = {
+            bride: {
+              en: {
+                firstName: "Hermione",
+                lastName: "Granger",
+                fullName: "Hermione Granger",
+                phone: "+1 555 123 4567",
+              },
+              pl: {
+                firstName: "Hermiona",
+                lastName: "Granger",
+                fullName: "Hermiona Granger",
+                phone: "+48 555 123 456",
+              },
+              uk: {
+                firstName: "Герміона",
+                lastName: "Ґрейнджер",
+                fullName: "Герміона Ґрейнджер",
+                phone: "+380 55 123 4567",
+              },
+            },
+            groom: {
+              en: {
+                firstName: "Shrek",
+                lastName: "Ogre",
+                fullName: "Shrek Ogre",
+                phone: "+1 555 765 4321",
+              },
+              pl: {
+                firstName: "Shrek",
+                lastName: "Ogr",
+                fullName: "Shrek Ogr",
+                phone: "+48 555 765 432",
+              },
+              uk: {
+                firstName: "Шрек",
+                lastName: "Огр",
+                fullName: "Шрек Огр",
+                phone: "+380 55 765 4321",
+              },
+            },
+          };
+        } else if (
+          data.couple.bride &&
+          (typeof data.couple.bride.firstName === "string" ||
+            typeof data.couple.bride.phone === "string")
+        ) {
+          // Migrate old couple structure to localized (both very old and previous version)
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const oldCouple = data.couple as any;
+          const bridePhone = oldCouple.bride.phone || "+1 555 123 4567";
+          const groomPhone = oldCouple.groom.phone || "+1 555 765 4321";
+
+          data.couple = {
+            bride: {
+              en: {
+                firstName:
+                  oldCouple.bride.en?.firstName ||
+                  oldCouple.bride.firstName ||
+                  "",
+                lastName:
+                  oldCouple.bride.en?.lastName ||
+                  oldCouple.bride.lastName ||
+                  "",
+                fullName:
+                  oldCouple.bride.en?.fullName ||
+                  oldCouple.bride.fullName ||
+                  "",
+                phone: oldCouple.bride.en?.phone || bridePhone,
+              },
+              pl: {
+                firstName:
+                  oldCouple.bride.pl?.firstName ||
+                  oldCouple.bride.firstName ||
+                  "",
+                lastName:
+                  oldCouple.bride.pl?.lastName ||
+                  oldCouple.bride.lastName ||
+                  "",
+                fullName:
+                  oldCouple.bride.pl?.fullName ||
+                  oldCouple.bride.fullName ||
+                  "",
+                phone: oldCouple.bride.pl?.phone || bridePhone,
+              },
+              uk: {
+                firstName:
+                  oldCouple.bride.uk?.firstName ||
+                  oldCouple.bride.firstName ||
+                  "",
+                lastName:
+                  oldCouple.bride.uk?.lastName ||
+                  oldCouple.bride.lastName ||
+                  "",
+                fullName:
+                  oldCouple.bride.uk?.fullName ||
+                  oldCouple.bride.fullName ||
+                  "",
+                phone: oldCouple.bride.uk?.phone || bridePhone,
+              },
+            },
+            groom: {
+              en: {
+                firstName:
+                  oldCouple.groom.en?.firstName ||
+                  oldCouple.groom.firstName ||
+                  "",
+                lastName:
+                  oldCouple.groom.en?.lastName ||
+                  oldCouple.groom.lastName ||
+                  "",
+                fullName:
+                  oldCouple.groom.en?.fullName ||
+                  oldCouple.groom.fullName ||
+                  "",
+                phone: oldCouple.groom.en?.phone || groomPhone,
+              },
+              pl: {
+                firstName:
+                  oldCouple.groom.pl?.firstName ||
+                  oldCouple.groom.firstName ||
+                  "",
+                lastName:
+                  oldCouple.groom.pl?.lastName ||
+                  oldCouple.groom.lastName ||
+                  "",
+                fullName:
+                  oldCouple.groom.pl?.fullName ||
+                  oldCouple.groom.fullName ||
+                  "",
+                phone: oldCouple.groom.pl?.phone || groomPhone,
+              },
+              uk: {
+                firstName:
+                  oldCouple.groom.uk?.firstName ||
+                  oldCouple.groom.firstName ||
+                  "",
+                lastName:
+                  oldCouple.groom.uk?.lastName ||
+                  oldCouple.groom.lastName ||
+                  "",
+                fullName:
+                  oldCouple.groom.uk?.fullName ||
+                  oldCouple.groom.fullName ||
+                  "",
+                phone: oldCouple.groom.uk?.phone || groomPhone,
+              },
+            },
+          };
+        }
+
+        if (!data.date) {
+          data.date = {
+            year: 2026,
+            month: 12,
+            day: 25,
+          };
+        }
+
+        // Migrate ceremony if it has old structure (locationName/address as strings)
+        if (data.ceremony && typeof data.ceremony.locationName === "string") {
+          const oldCeremony = data.ceremony;
+          data.ceremony = {
+            time: oldCeremony.time || "15:00",
+            googleMapsUrl: oldCeremony.googleMapsUrl || "",
+            en: {
+              locationName: oldCeremony.locationName || "",
+              address: oldCeremony.address || "",
+            },
+            pl: {
+              locationName: oldCeremony.locationName || "",
+              address: oldCeremony.address || "",
+            },
+            uk: {
+              locationName: oldCeremony.locationName || "",
+              address: oldCeremony.address || "",
+            },
+          };
+        }
+
+        // Migrate reception if it has old structure
+        if (data.reception && typeof data.reception.locationName === "string") {
+          const oldReception = data.reception;
+          data.reception = {
+            googleMapsUrl: oldReception.googleMapsUrl || "",
+            en: {
+              locationName: oldReception.locationName || "",
+              address: oldReception.address || "",
+            },
+            pl: {
+              locationName: oldReception.locationName || "",
+              address: oldReception.address || "",
+            },
+            uk: {
+              locationName: oldReception.locationName || "",
+              address: oldReception.address || "",
+            },
+          };
+        }
+
+        // Migrate old telegramQrCode (string) to new structure (object)
+        if (data.telegramQrCode && typeof data.telegramQrCode === "string") {
+          const oldQrCode = data.telegramQrCode;
+          data.groupQrCode = {
+            en: oldQrCode,
+            pl: oldQrCode,
+            uk: oldQrCode,
+          };
+          delete data.telegramQrCode;
+        } else if (
+          data.telegramQrCode &&
+          typeof data.telegramQrCode === "object"
+        ) {
+          // Rename telegramQrCode to groupQrCode
+          data.groupQrCode = data.telegramQrCode;
+          delete data.telegramQrCode;
+        }
+
         setConfig(data);
       } else {
         setError("Failed to load configuration");
@@ -76,22 +299,34 @@ export default function WeddingConfigEditor({
     }
   };
 
-  const handleQrCodeUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file || !config) return;
+  const handleQrCodeUpload =
+    (lang: Language) => (e: React.ChangeEvent<HTMLInputElement>) => {
+      const file = e.target.files?.[0];
+      if (!file || !config) return;
 
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      const base64 = event.target?.result as string;
-      setConfig({ ...config, telegramQrCode: base64 });
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const base64 = event.target?.result as string;
+        setConfig({
+          ...config,
+          groupQrCode: {
+            ...config.groupQrCode,
+            [lang]: base64,
+          },
+        });
+      };
+      reader.readAsDataURL(file);
     };
-    reader.readAsDataURL(file);
-  };
 
-  const removeQrCode = () => {
+  const removeQrCode = (lang: Language) => () => {
     if (!config) return;
-    const { telegramQrCode, ...rest } = config;
-    setConfig(rest);
+    setConfig({
+      ...config,
+      groupQrCode: {
+        ...config.groupQrCode,
+        [lang]: undefined,
+      },
+    });
   };
 
   if (loading) {
@@ -119,163 +354,202 @@ export default function WeddingConfigEditor({
         }
       >
         {/* Couple Info */}
-        <div className="grid md:grid-cols-2 gap-6">
-          {/* Bride */}
-          <div className="space-y-4">
-            <h3 className="font-semibold text-lg text-navy-900">
-              Bride Details
-            </h3>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                First Name
-              </label>
-              <input
-                type="text"
-                value={config.couple.bride.firstName}
-                onChange={(e) =>
-                  setConfig({
-                    ...config,
-                    couple: {
-                      ...config.couple,
-                      bride: {
-                        ...config.couple.bride,
-                        firstName: e.target.value,
-                        fullName: `${e.target.value} ${config.couple.bride.lastName}`,
-                      },
-                    },
-                  })
-                }
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-navy-500 focus:border-transparent"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Last Name
-              </label>
-              <input
-                type="text"
-                value={config.couple.bride.lastName}
-                onChange={(e) =>
-                  setConfig({
-                    ...config,
-                    couple: {
-                      ...config.couple,
-                      bride: {
-                        ...config.couple.bride,
-                        lastName: e.target.value,
-                        fullName: `${config.couple.bride.firstName} ${e.target.value}`,
-                      },
-                    },
-                  })
-                }
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-navy-500 focus:border-transparent"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Phone
-              </label>
-              <input
-                type="tel"
-                value={config.couple.bride.phone}
-                onChange={(e) =>
-                  setConfig({
-                    ...config,
-                    couple: {
-                      ...config.couple,
-                      bride: {
-                        ...config.couple.bride,
-                        phone: e.target.value,
-                      },
-                    },
-                  })
-                }
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-navy-500 focus:border-transparent"
-              />
-            </div>
+        <div className="space-y-6">
+          <h2 className="text-xl font-bold text-navy-900">Couple Details</h2>
+
+          {/* Language Tabs */}
+          <div className="flex gap-2 border-b">
+            {(["en", "pl", "uk"] as Language[]).map((lang) => (
+              <button
+                key={lang}
+                onClick={() => setSelectedLang(lang)}
+                className={`px-4 py-2 font-medium transition-colors ${
+                  selectedLang === lang
+                    ? "border-b-2 border-navy-600 text-navy-900"
+                    : "text-gray-500 hover:text-gray-700"
+                }`}
+              >
+                {lang === "en" && "🇬🇧 English"}
+                {lang === "pl" && "🇵🇱 Polski"}
+                {lang === "uk" && "🇺🇦 Українська"}
+              </button>
+            ))}
           </div>
 
-          {/* Groom */}
-          <div className="space-y-4">
-            <h3 className="font-semibold text-lg text-navy-900">
-              Groom Details
-            </h3>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                First Name
-              </label>
-              <input
-                type="text"
-                value={config.couple.groom.firstName}
-                onChange={(e) =>
-                  setConfig({
-                    ...config,
-                    couple: {
-                      ...config.couple,
-                      groom: {
-                        ...config.couple.groom,
-                        firstName: e.target.value,
-                        fullName: `${e.target.value} ${config.couple.groom.lastName}`,
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* Bride */}
+            <div className="space-y-4">
+              <h3 className="font-semibold text-lg text-navy-900">
+                Bride Details
+              </h3>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  First Name ({selectedLang.toUpperCase()})
+                </label>
+                <input
+                  type="text"
+                  value={config.couple.bride[selectedLang]?.firstName || ""}
+                  onChange={(e) =>
+                    setConfig({
+                      ...config,
+                      couple: {
+                        ...config.couple,
+                        bride: {
+                          ...config.couple.bride,
+                          [selectedLang]: {
+                            ...config.couple.bride[selectedLang],
+                            firstName: e.target.value,
+                            fullName: `${e.target.value} ${config.couple.bride[selectedLang]?.lastName || ""}`,
+                          },
+                        },
                       },
-                    },
-                  })
-                }
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-navy-500 focus:border-transparent"
-              />
+                    })
+                  }
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-navy-500 focus:border-transparent"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Last Name ({selectedLang.toUpperCase()})
+                </label>
+                <input
+                  type="text"
+                  value={config.couple.bride[selectedLang]?.lastName || ""}
+                  onChange={(e) =>
+                    setConfig({
+                      ...config,
+                      couple: {
+                        ...config.couple,
+                        bride: {
+                          ...config.couple.bride,
+                          [selectedLang]: {
+                            ...config.couple.bride[selectedLang],
+                            lastName: e.target.value,
+                            fullName: `${config.couple.bride[selectedLang]?.firstName || ""} ${e.target.value}`,
+                          },
+                        },
+                      },
+                    })
+                  }
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-navy-500 focus:border-transparent"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Phone ({selectedLang.toUpperCase()})
+                </label>
+                <input
+                  type="tel"
+                  value={config.couple.bride[selectedLang]?.phone || ""}
+                  onChange={(e) =>
+                    setConfig({
+                      ...config,
+                      couple: {
+                        ...config.couple,
+                        bride: {
+                          ...config.couple.bride,
+                          [selectedLang]: {
+                            ...config.couple.bride[selectedLang],
+                            phone: e.target.value,
+                          },
+                        },
+                      },
+                    })
+                  }
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-navy-500 focus:border-transparent"
+                />
+              </div>
             </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Last Name
-              </label>
-              <input
-                type="text"
-                value={config.couple.groom.lastName}
-                onChange={(e) =>
-                  setConfig({
-                    ...config,
-                    couple: {
-                      ...config.couple,
-                      groom: {
-                        ...config.couple.groom,
-                        lastName: e.target.value,
-                        fullName: `${config.couple.groom.firstName} ${e.target.value}`,
+
+            {/* Groom */}
+            <div className="space-y-4">
+              <h3 className="font-semibold text-lg text-navy-900">
+                Groom Details
+              </h3>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  First Name ({selectedLang.toUpperCase()})
+                </label>
+                <input
+                  type="text"
+                  value={config.couple.groom[selectedLang]?.firstName || ""}
+                  onChange={(e) =>
+                    setConfig({
+                      ...config,
+                      couple: {
+                        ...config.couple,
+                        groom: {
+                          ...config.couple.groom,
+                          [selectedLang]: {
+                            ...config.couple.groom[selectedLang],
+                            firstName: e.target.value,
+                            fullName: `${e.target.value} ${config.couple.groom[selectedLang]?.lastName || ""}`,
+                          },
+                        },
                       },
-                    },
-                  })
-                }
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-navy-500 focus:border-transparent"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Phone
-              </label>
-              <input
-                type="tel"
-                value={config.couple.groom.phone}
-                onChange={(e) =>
-                  setConfig({
-                    ...config,
-                    couple: {
-                      ...config.couple,
-                      groom: {
-                        ...config.couple.groom,
-                        phone: e.target.value,
+                    })
+                  }
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-navy-500 focus:border-transparent"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Last Name ({selectedLang.toUpperCase()})
+                </label>
+                <input
+                  type="text"
+                  value={config.couple.groom[selectedLang]?.lastName || ""}
+                  onChange={(e) =>
+                    setConfig({
+                      ...config,
+                      couple: {
+                        ...config.couple,
+                        groom: {
+                          ...config.couple.groom,
+                          [selectedLang]: {
+                            ...config.couple.groom[selectedLang],
+                            lastName: e.target.value,
+                            fullName: `${config.couple.groom[selectedLang]?.firstName || ""} ${e.target.value}`,
+                          },
+                        },
                       },
-                    },
-                  })
-                }
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-navy-500 focus:border-transparent"
-              />
+                    })
+                  }
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-navy-500 focus:border-transparent"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Phone ({selectedLang.toUpperCase()})
+                </label>
+                <input
+                  type="tel"
+                  value={config.couple.groom[selectedLang]?.phone || ""}
+                  onChange={(e) =>
+                    setConfig({
+                      ...config,
+                      couple: {
+                        ...config.couple,
+                        groom: {
+                          ...config.couple.groom,
+                          [selectedLang]: {
+                            ...config.couple.groom[selectedLang],
+                            phone: e.target.value,
+                          },
+                        },
+                      },
+                    })
+                  }
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-navy-500 focus:border-transparent"
+                />
+              </div>
             </div>
           </div>
         </div>
 
         {/* Wedding Date */}
         <div className="space-y-4 border-t pt-6">
-          <h3 className="font-semibold text-lg text-navy-900">
-            Wedding Date
-          </h3>
+          <h3 className="font-semibold text-lg text-navy-900">Wedding Date</h3>
           <div className="grid grid-cols-3 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -355,9 +629,29 @@ export default function WeddingConfigEditor({
           <h3 className="font-semibold text-lg text-navy-900">
             Ceremony Location
           </h3>
+
+          {/* Language Tabs */}
+          <div className="flex gap-2 border-b">
+            {(["en", "pl", "uk"] as Language[]).map((lang) => (
+              <button
+                key={lang}
+                onClick={() => setSelectedLang(lang)}
+                className={`px-4 py-2 font-medium transition-colors ${
+                  selectedLang === lang
+                    ? "border-b-2 border-navy-600 text-navy-900"
+                    : "text-gray-500 hover:text-gray-700"
+                }`}
+              >
+                {lang === "en" && "🇬🇧 English"}
+                {lang === "pl" && "🇵🇱 Polski"}
+                {lang === "uk" && "🇺🇦 Українська"}
+              </button>
+            ))}
+          </div>
+
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Time
+              Time (same for all languages)
             </label>
             <input
               type="text"
@@ -374,17 +668,20 @@ export default function WeddingConfigEditor({
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Location Name
+              Location Name ({selectedLang.toUpperCase()})
             </label>
             <input
               type="text"
-              value={config.ceremony.locationName}
+              value={config.ceremony[selectedLang]?.locationName || ""}
               onChange={(e) =>
                 setConfig({
                   ...config,
                   ceremony: {
                     ...config.ceremony,
-                    locationName: e.target.value,
+                    [selectedLang]: {
+                      ...config.ceremony[selectedLang],
+                      locationName: e.target.value,
+                    },
                   },
                 })
               }
@@ -393,15 +690,21 @@ export default function WeddingConfigEditor({
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Address
+              Address ({selectedLang.toUpperCase()})
             </label>
             <input
               type="text"
-              value={config.ceremony.address}
+              value={config.ceremony[selectedLang]?.address || ""}
               onChange={(e) =>
                 setConfig({
                   ...config,
-                  ceremony: { ...config.ceremony, address: e.target.value },
+                  ceremony: {
+                    ...config.ceremony,
+                    [selectedLang]: {
+                      ...config.ceremony[selectedLang],
+                      address: e.target.value,
+                    },
+                  },
                 })
               }
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-navy-500 focus:border-transparent"
@@ -409,7 +712,7 @@ export default function WeddingConfigEditor({
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Google Maps URL
+              Google Maps URL (same for all languages)
             </label>
             <div className="flex gap-2">
               <input
@@ -445,19 +748,42 @@ export default function WeddingConfigEditor({
           <h3 className="font-semibold text-lg text-navy-900">
             Reception Location
           </h3>
+
+          {/* Same language tabs */}
+          <div className="flex gap-2 border-b">
+            {(["en", "pl", "uk"] as Language[]).map((lang) => (
+              <button
+                key={lang}
+                onClick={() => setSelectedLang(lang)}
+                className={`px-4 py-2 font-medium transition-colors ${
+                  selectedLang === lang
+                    ? "border-b-2 border-navy-600 text-navy-900"
+                    : "text-gray-500 hover:text-gray-700"
+                }`}
+              >
+                {lang === "en" && "🇬🇧 English"}
+                {lang === "pl" && "🇵🇱 Polski"}
+                {lang === "uk" && "🇺🇦 Українська"}
+              </button>
+            ))}
+          </div>
+
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Location Name
+              Location Name ({selectedLang.toUpperCase()})
             </label>
             <input
               type="text"
-              value={config.reception.locationName}
+              value={config.reception[selectedLang]?.locationName || ""}
               onChange={(e) =>
                 setConfig({
                   ...config,
                   reception: {
                     ...config.reception,
-                    locationName: e.target.value,
+                    [selectedLang]: {
+                      ...config.reception[selectedLang],
+                      locationName: e.target.value,
+                    },
                   },
                 })
               }
@@ -466,17 +792,20 @@ export default function WeddingConfigEditor({
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Address
+              Address ({selectedLang.toUpperCase()})
             </label>
             <input
               type="text"
-              value={config.reception.address}
+              value={config.reception[selectedLang]?.address || ""}
               onChange={(e) =>
                 setConfig({
                   ...config,
                   reception: {
                     ...config.reception,
-                    address: e.target.value,
+                    [selectedLang]: {
+                      ...config.reception[selectedLang],
+                      address: e.target.value,
+                    },
                   },
                 })
               }
@@ -485,7 +814,7 @@ export default function WeddingConfigEditor({
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Google Maps URL
+              Google Maps URL (same for all languages)
             </label>
             <div className="flex gap-2">
               <input
@@ -516,21 +845,41 @@ export default function WeddingConfigEditor({
           </div>
         </div>
 
-        {/* Telegram QR Code */}
+        {/* Chat Group QR Code */}
         <div className="space-y-4 border-t pt-6">
           <h3 className="font-semibold text-lg text-navy-900">
-            Telegram Group QR Code
+            Chat Group QR Codes
           </h3>
-          {config.telegramQrCode ? (
+
+          {/* Language Tabs */}
+          <div className="flex gap-2 border-b">
+            {(["en", "pl", "uk"] as Language[]).map((lang) => (
+              <button
+                key={lang}
+                onClick={() => setSelectedLang(lang)}
+                className={`px-4 py-2 font-medium transition-colors ${
+                  selectedLang === lang
+                    ? "border-b-2 border-navy-600 text-navy-900"
+                    : "text-gray-500 hover:text-gray-700"
+                }`}
+              >
+                {lang === "en" && "🇬🇧 English"}
+                {lang === "pl" && "🇵🇱 Polski"}
+                {lang === "uk" && "🇺🇦 Українська"}
+              </button>
+            ))}
+          </div>
+
+          {config.groupQrCode?.[selectedLang] ? (
             <div className="space-y-3">
               <div className="relative inline-block">
                 <img
-                  src={config.telegramQrCode}
-                  alt="Telegram QR Code"
+                  src={config.groupQrCode[selectedLang]}
+                  alt={`Chat Group QR Code (${selectedLang.toUpperCase()})`}
                   className="w-48 h-48 object-contain border-2 border-gray-300 rounded-lg"
                 />
                 <button
-                  onClick={removeQrCode}
+                  onClick={removeQrCode(selectedLang)}
                   className="absolute -top-2 -right-2 bg-red-500 text-white p-1 rounded-full hover:bg-red-600 transition-colors"
                 >
                   <X size={16} />
@@ -539,11 +888,11 @@ export default function WeddingConfigEditor({
               <div>
                 <label className="inline-flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors cursor-pointer">
                   <Upload size={16} />
-                  Replace QR Code
+                  Replace QR Code ({selectedLang.toUpperCase()})
                   <input
                     type="file"
                     accept="image/*"
-                    onChange={handleQrCodeUpload}
+                    onChange={handleQrCodeUpload(selectedLang)}
                     className="hidden"
                   />
                 </label>
@@ -553,16 +902,17 @@ export default function WeddingConfigEditor({
             <div>
               <label className="inline-flex items-center gap-2 px-4 py-2 bg-navy-600 hover:bg-navy-700 text-white rounded-lg transition-colors cursor-pointer">
                 <Upload size={16} />
-                Upload QR Code
+                Upload QR Code ({selectedLang.toUpperCase()})
                 <input
                   type="file"
                   accept="image/*"
-                  onChange={handleQrCodeUpload}
+                  onChange={handleQrCodeUpload(selectedLang)}
                   className="hidden"
                 />
               </label>
               <p className="text-sm text-gray-500 mt-2">
-                Upload a QR code image for guests to join the Telegram group
+                Upload a QR code image for {selectedLang.toUpperCase()} guests
+                to join the chat group (WhatsApp, Telegram, etc.)
               </p>
             </div>
           )}
