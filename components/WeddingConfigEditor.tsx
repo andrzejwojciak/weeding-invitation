@@ -845,6 +845,101 @@ export default function WeddingConfigEditor({
           </div>
         </div>
 
+        {/* Background Image Upload */}
+        <div className="space-y-4 border-t pt-6">
+          <h3 className="font-semibold text-lg text-navy-900">
+            Background Image
+          </h3>
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Boarding Pass Background
+              </label>
+              <div className="flex items-start gap-4">
+                <div className="flex-1">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (file) {
+                        const reader = new FileReader();
+                        reader.onloadend = () => {
+                          setConfig({
+                            ...config,
+                            backgroundImage: reader.result as string,
+                          });
+                        };
+                        reader.readAsDataURL(file);
+                      }
+                    }}
+                    className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-navy-50 file:text-navy-700 hover:file:bg-navy-100"
+                  />
+                  <p className="text-xs text-gray-500 mt-1">
+                    Upload an image to use as boarding pass background
+                    (recommended: 1200x1600px)
+                  </p>
+                </div>
+                {config.backgroundImage && (
+                  <div className="flex flex-col gap-2">
+                    <img
+                      src={config.backgroundImage}
+                      alt="Background preview"
+                      className="w-20 h-20 object-cover rounded border"
+                    />
+                    <button
+                      onClick={() =>
+                        setConfig({
+                          ...config,
+                          backgroundImage: undefined,
+                          backgroundPosition: undefined,
+                        })
+                      }
+                      className="text-xs text-red-600 hover:text-red-700"
+                    >
+                      Remove
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+            {config.backgroundImage && (
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Background Position
+                </label>
+                <select
+                  value={config.backgroundPosition || "main-section"}
+                  onChange={(e) =>
+                    setConfig({
+                      ...config,
+                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                      backgroundPosition: e.target.value as any,
+                    })
+                  }
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-navy-500 focus:border-transparent"
+                >
+                  <option value="main-section">
+                    Main section (left side with info)
+                  </option>
+                  <option value="full">
+                    Entire screen (full page background)
+                  </option>
+                  <option value="header">
+                    Header area (couple names section)
+                  </option>
+                  <option value="between-header">
+                    Between header and info (under couple names)
+                  </option>
+                </select>
+                <p className="text-xs text-gray-500 mt-1">
+                  Choose where the background image should appear
+                </p>
+              </div>
+            )}
+          </div>
+        </div>
+
         {/* Chat Group QR Code */}
         <div className="space-y-4 border-t pt-6">
           <h3 className="font-semibold text-lg text-navy-900">

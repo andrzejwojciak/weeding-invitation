@@ -56,4 +56,6 @@ export interface EditableWeddingConfig {
     pl?: string; // base64 or URL
     uk?: string; // base64 or URL
   };
+  backgroundImage?: string; // base64 or URL
+  backgroundPosition?: "full" | "main-section" | "header" | "between-header";
 }
