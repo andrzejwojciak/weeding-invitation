@@ -79,21 +79,6 @@ export default function Envelope({ onOpen, recipientName }: EnvelopeProps) {
               <div className="h-0.5 bg-gray-600 w-3/4" />
               <div className="h-0.5 bg-gray-600 w-1/2" />
             </div>
-
-            {/* Shine effect */}
-            <motion.div
-              className="absolute inset-0 bg-gradient-to-tr from-transparent via-white to-transparent opacity-0 group-hover:opacity-20 rounded-lg pointer-events-none"
-              initial={{ x: "-100%" }}
-              animate={{
-                x: ["-100%", "100%"],
-              }}
-              transition={{
-                duration: 1.2,
-                repeat: Infinity,
-                repeatDelay: 1.5,
-                ease: "easeInOut",
-              }}
-            />
           </div>
 
           <motion.p
