@@ -83,6 +83,7 @@ export default function Envelope({ onOpen, recipientName }: EnvelopeProps) {
             {/* Shine effect */}
             <motion.div
               className="absolute inset-0 bg-gradient-to-tr from-transparent via-white to-transparent opacity-0 group-hover:opacity-20 rounded-lg pointer-events-none"
+              initial={{ x: "-100%" }}
               animate={{
                 x: ["-100%", "100%"],
               }}
