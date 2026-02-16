@@ -44,7 +44,11 @@ export default function AdminPage() {
   const fetchInvitations = async () => {
     setRefreshing(true);
     try {
-      const response = await fetch("/api/invitations");
+      const response = await fetch("/api/invitations", {
+        headers: {
+          Authorization: `Bearer ${secretKey}`,
+        },
+      });
       if (response.ok) {
         const data = await response.json();
         setInvitations(data);
@@ -66,7 +70,10 @@ export default function AdminPage() {
     try {
       const response = await fetch("/api/invitations", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${secretKey}`,
+        },
         body: JSON.stringify({ recipientName: newRecipientName }),
       });
 
