@@ -1,9 +1,19 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { MapPin, Clock, Phone, Gift, Wine, QrCode } from "lucide-react";
+import {
+  MapPin,
+  Clock,
+  Phone,
+  Gift,
+  Wine,
+  QrCode,
+  ExternalLink,
+} from "lucide-react";
 import { weddingConfig, getCoupleNames } from "@/lib/config/wedding";
 import { getTranslation, type Language } from "@/lib/i18n/locales";
+import type { EditableWeddingConfig } from "@/lib/types/wedding-config";
 
 interface BoardingPassProps {
   recipientName: string;
@@ -15,6 +25,20 @@ export default function BoardingPass({
   language,
 }: BoardingPassProps) {
   const t = getTranslation(language);
+  const [config, setConfig] = useState<EditableWeddingConfig | null>(null);
+
+  useEffect(() => {
+    fetch("/api/wedding-config/public")
+      .then((res) => res.json())
+      .then((data) => setConfig(data))
+      .catch(() => console.error("Failed to load config"));
+  }, []);
+
+  // Use custom config or fallback to default
+  const ceremonyData = config?.ceremony || weddingConfig.ceremony;
+  const receptionData = config?.reception || weddingConfig.reception;
+  const coupleData = config?.couple || weddingConfig.couple;
+  const qrCode = config?.telegramQrCode;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-navy-900 via-navy-800 to-slate-800 flex items-center justify-center p-4 py-12">
@@ -71,15 +95,25 @@ export default function BoardingPass({
                         {t.boardingPass.departure} - {t.boardingPass.ceremony}
                       </div>
                       <div className="text-xl font-bold text-navy-900">
-                        {weddingConfig.ceremony.time}
+                        {ceremonyData.time}
                       </div>
                       <div className="text-sm font-medium text-gray-700 mt-1">
-                        {weddingConfig.ceremony.locationName}
+                        {ceremonyData.locationName}
                       </div>
-                      <div className="text-sm text-gray-600 flex items-start gap-1 mt-1">
+                      <a
+                        href={
+                          "googleMapsUrl" in ceremonyData
+                            ? ceremonyData.googleMapsUrl
+                            : "#"
+                        }
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-sm text-navy-600 hover:text-navy-800 flex items-start gap-1 mt-1 hover:underline"
+                      >
                         <MapPin size={14} className="mt-0.5 flex-shrink-0" />
-                        {weddingConfig.ceremony.address}
-                      </div>
+                        {ceremonyData.address}
+                        <ExternalLink size={12} className="mt-1" />
+                      </a>
                     </div>
                   </div>
                 </div>
@@ -99,12 +133,22 @@ export default function BoardingPass({
                         {t.boardingPass.followingCeremony}
                       </div>
                       <div className="text-sm font-medium text-gray-700 mt-1">
-                        {weddingConfig.reception.locationName}
+                        {receptionData.locationName}
                       </div>
-                      <div className="text-sm text-gray-600 flex items-start gap-1 mt-1">
+                      <a
+                        href={
+                          "googleMapsUrl" in receptionData
+                            ? receptionData.googleMapsUrl
+                            : "#"
+                        }
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-sm text-navy-600 hover:text-navy-800 flex items-start gap-1 mt-1 hover:underline"
+                      >
                         <MapPin size={14} className="mt-0.5 flex-shrink-0" />
-                        {weddingConfig.reception.address}
-                      </div>
+                        {receptionData.address}
+                        <ExternalLink size={12} className="mt-1" />
+                      </a>
                     </div>
                   </div>
                 </div>
@@ -125,25 +169,25 @@ export default function BoardingPass({
                   <div className="flex items-center gap-2 text-sm">
                     <Phone size={14} className="text-navy-600" />
                     <span className="text-gray-600">
-                      {weddingConfig.couple.bride.firstName}:
+                      {coupleData.bride.firstName}:
                     </span>
                     <a
-                      href={`tel:${weddingConfig.couple.bride.phone}`}
+                      href={`tel:${coupleData.bride.phone}`}
                       className="font-medium text-navy-900 hover:underline"
                     >
-                      {weddingConfig.couple.bride.phone}
+                      {coupleData.bride.phone}
                     </a>
                   </div>
                   <div className="flex items-center gap-2 text-sm">
                     <Phone size={14} className="text-navy-600" />
                     <span className="text-gray-600">
-                      {weddingConfig.couple.groom.firstName}:
+                      {coupleData.groom.firstName}:
                     </span>
                     <a
-                      href={`tel:${weddingConfig.couple.groom.phone}`}
+                      href={`tel:${coupleData.groom.phone}`}
                       className="font-medium text-navy-900 hover:underline"
                     >
-                      {weddingConfig.couple.groom.phone}
+                      {coupleData.groom.phone}
                     </a>
                   </div>
                 </div>
@@ -173,15 +217,23 @@ export default function BoardingPass({
 
             {/* Sidebar - QR & Barcode */}
             <div className="bg-gray-50 p-8 flex flex-col items-center justify-center gap-6 border-t md:border-t-0 md:border-l border-gray-200">
-              {/* QR Code Placeholder */}
+              {/* QR Code */}
               <div className="text-center">
-                <div className="w-40 h-40 bg-white border-2 border-gray-300 rounded-lg flex items-center justify-center mb-3 shadow-sm">
-                  <QrCode size={80} className="text-gray-400" />
+                <div className="w-40 h-40 bg-white border-2 border-gray-300 rounded-lg flex items-center justify-center mb-3 shadow-sm overflow-hidden">
+                  {qrCode ? (
+                    <img
+                      src={qrCode}
+                      alt="Telegram QR Code"
+                      className="w-full h-full object-contain"
+                    />
+                  ) : (
+                    <QrCode size={80} className="text-gray-400" />
+                  )}
                 </div>
                 <div className="text-xs text-gray-600 font-medium">
                   Scan to join
                 </div>
-                <div className="text-xs text-gray-600">WhatsApp Group</div>
+                <div className="text-xs text-gray-600">Telegram Group</div>
               </div>
 
               {/* Barcode */}

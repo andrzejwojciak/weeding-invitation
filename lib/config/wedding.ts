@@ -8,44 +8,44 @@
 export const weddingConfig = {
   couple: {
     bride: {
-      firstName: "Sofiia",
-      lastName: "Havrilchenko",
-      fullName: "Sofiia Havrilchenko",
-      phone: "666 710 336",
+      firstName: "Hermione",
+      lastName: "Granger",
+      fullName: "Hermione Granger",
+      phone: "+1 555 123 4567",
     },
     groom: {
-      firstName: "Andrzej",
-      lastName: "Wójciak",
-      fullName: "Andrzej Wójciak",
-      phone: "731 506 200",
+      firstName: "Shrek",
+      lastName: "Ogre",
+      fullName: "Shrek Ogre",
+      phone: "+1 555 765 4321",
     },
   },
 
   date: {
-    full: "June 13, 2026",
+    full: "December 25, 2026",
     year: 2026,
-    month: 6,
-    day: 13,
+    month: 12,
+    day: 25,
   },
 
   ceremony: {
-    time: "14:00",
-    locationName: "Chapel of Our Lady on the Hill",
-    locationShort: "Kaplica Matki Bożej na Wzgórzu",
-    address: "Lipska 36, 51-003 Wrocław",
-    city: "Wrocław",
+    time: "15:00",
+    locationName: "Enchanted Forest Chapel",
+    locationShort: "Forest Chapel",
+    address: "123 Magic Lane, Fairy Tale Village",
+    city: "Far Far Away",
   },
 
   reception: {
-    locationName: "Topacz Castle",
-    locationShort: "Zamek Topacz",
-    address: "Templariuszy 1, 55-040 Ślęza",
-    city: "Ślęza",
+    locationName: "Dragon's Keep Ballroom",
+    locationShort: "Dragon's Keep",
+    address: "456 Swamp Road, Far Far Away",
+    city: "Far Far Away",
   },
 
   rsvp: {
-    deadline: "May 23, 2026",
-    deadlineDate: new Date("2026-05-23"),
+    deadline: "November 30, 2026",
+    deadlineDate: new Date("2026-11-30"),
   },
 
   design: {

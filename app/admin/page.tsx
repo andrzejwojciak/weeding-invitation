@@ -8,9 +8,11 @@ import {
   XCircle,
   RefreshCw,
   Trash2,
+  Settings,
 } from "lucide-react";
 import type { Invitation } from "@/lib/types/invitation";
 import { languages, type Language } from "@/lib/i18n/locales";
+import WeddingConfigEditor from "@/components/WeddingConfigEditor";
 
 export default function AdminPage() {
   const [authenticated, setAuthenticated] = useState(false);
@@ -22,6 +24,7 @@ export default function AdminPage() {
   const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState("");
   const [copiedSlug, setCopiedSlug] = useState<string | null>(null);
+  const [isConfigExpanded, setIsConfigExpanded] = useState(false);
 
   useEffect(() => {
     if (authenticated) {
@@ -202,6 +205,41 @@ export default function AdminPage() {
               />
               Refresh
             </button>
+          </div>
+
+          {/* Wedding Configuration Card */}
+          <div className="mb-8 bg-white rounded-lg shadow-md overflow-hidden border border-gray-200">
+            <button
+              onClick={() => setIsConfigExpanded(!isConfigExpanded)}
+              className="w-full flex items-center justify-between p-4 hover:bg-gray-50 transition-colors"
+            >
+              <div className="flex items-center gap-3">
+                <Settings size={20} className="text-navy-600" />
+                <h2 className="text-lg font-semibold text-gray-900">
+                  Wedding Details Configuration
+                </h2>
+              </div>
+              <svg
+                className={`w-5 h-5 text-gray-500 transition-transform ${
+                  isConfigExpanded ? "rotate-180" : ""
+                }`}
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+            </button>
+            {isConfigExpanded && (
+              <div className="border-t border-gray-200">
+                <WeddingConfigEditor secretKey={secretKey} isEmbedded={true} />
+              </div>
+            )}
           </div>
 
           <form onSubmit={handleCreateInvitation} className="mb-8">
