@@ -1,36 +1,46 @@
 export interface LocalizedLocation {
-  en: {
+  base: {
     locationName: string;
     address: string;
   };
-  pl: {
-    locationName: string;
-    address: string;
+  en?: {
+    locationName?: string;
+    address?: string;
   };
-  uk: {
-    locationName: string;
-    address: string;
+  pl?: {
+    locationName?: string;
+    address?: string;
+  };
+  uk?: {
+    locationName?: string;
+    address?: string;
   };
 }
 
 export interface LocalizedPerson {
-  en: {
+  base: {
     firstName: string;
     lastName: string;
     fullName: string;
     phone: string;
   };
-  pl: {
-    firstName: string;
-    lastName: string;
-    fullName: string;
-    phone: string;
+  en?: {
+    firstName?: string;
+    lastName?: string;
+    fullName?: string;
+    phone?: string;
   };
-  uk: {
-    firstName: string;
-    lastName: string;
-    fullName: string;
-    phone: string;
+  pl?: {
+    firstName?: string;
+    lastName?: string;
+    fullName?: string;
+    phone?: string;
+  };
+  uk?: {
+    firstName?: string;
+    lastName?: string;
+    fullName?: string;
+    phone?: string;
   };
 }
 

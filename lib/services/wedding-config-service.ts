@@ -1,7 +1,6 @@
 import { promises as fs } from "fs";
 import path from "path";
 import type { EditableWeddingConfig } from "../types/wedding-config";
-import { weddingConfig as defaultConfig } from "../config/wedding";
 
 const CONFIG_FILE = path.join(process.cwd(), "data", "wedding-config.json");
 
@@ -42,7 +41,7 @@ export class WeddingConfigService {
       return {
         couple: {
           bride: {
-            en: {
+            base: {
               firstName: "Hermione",
               lastName: "Granger",
               fullName: "Hermione Granger",
@@ -50,57 +49,50 @@ export class WeddingConfigService {
             },
             pl: {
               firstName: "Hermiona",
-              lastName: "Granger",
-              fullName: "Hermiona Granger",
-              phone: "+48 555 123 456",
             },
             uk: {
               firstName: "Герміона",
               lastName: "Ґрейнджер",
               fullName: "Герміона Ґрейнджер",
-              phone: "+380 55 123 4567",
             },
           },
           groom: {
-            en: {
+            base: {
               firstName: "Shrek",
               lastName: "Ogre",
               fullName: "Shrek Ogre",
               phone: "+1 555 765 4321",
             },
             pl: {
-              firstName: "Shrek",
               lastName: "Ogr",
               fullName: "Shrek Ogr",
-              phone: "+48 555 765 432",
             },
             uk: {
               firstName: "Шрек",
               lastName: "Огр",
               fullName: "Шрек Огр",
-              phone: "+380 55 765 4321",
             },
           },
         },
         ceremony: {
-          time: defaultConfig.ceremony.time,
+          time: "15:00",
           googleMapsUrl: "https://maps.google.com/?q=Enchanted+Forest+Chapel",
-          en: {
+          base: {
             locationName: "Enchanted Forest Chapel",
-            address: "123 Magic Lane, Fairy Tale Village",
+            address: "123 Forest Lane, Fairytale Kingdom",
           },
           pl: {
-            locationName: "Kaplica Zaczarowanego Lasu",
-            address: "Magiczna 123, Baśniowa Wioska",
+            locationName: "Kaplica w Zaczarowanym Lesie",
+            address: "Leśna 123, Baśniowe Królestwo",
           },
           uk: {
             locationName: "Каплиця Зачарованого Лісу",
-            address: "Магічна 123, Казкове Село",
+            address: "Лісова 123, Казкове Королівство",
           },
         },
         reception: {
           googleMapsUrl: "https://maps.google.com/?q=Dragon's+Keep+Ballroom",
-          en: {
+          base: {
             locationName: "Dragon's Keep Ballroom",
             address: "456 Swamp Road, Far Far Away",
           },
@@ -114,9 +106,9 @@ export class WeddingConfigService {
           },
         },
         date: {
-          year: defaultConfig.date.year,
-          month: defaultConfig.date.month,
-          day: defaultConfig.date.day,
+          year: 2026,
+          month: 12,
+          day: 25,
         },
       };
     }

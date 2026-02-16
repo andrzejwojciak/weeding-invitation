@@ -25,6 +25,7 @@ export default function WeddingConfigEditor({
 
   useEffect(() => {
     fetchConfig();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const fetchConfig = async () => {
@@ -349,7 +350,7 @@ export default function WeddingConfigEditor({
       <div
         className={
           isEmbedded
-            ? "p-6 space-y-6"
+            ? "space-y-6"
             : "p-6 space-y-6 max-h-[70vh] overflow-y-auto"
         }
       >
@@ -357,34 +358,223 @@ export default function WeddingConfigEditor({
         <div className="space-y-6">
           <h2 className="text-xl font-bold text-navy-900">Couple Details</h2>
 
-          {/* Language Tabs */}
-          <div className="flex gap-2 border-b">
-            {(["en", "pl", "uk"] as Language[]).map((lang) => (
-              <button
-                key={lang}
-                onClick={() => setSelectedLang(lang)}
-                className={`px-4 py-2 font-medium transition-colors ${
-                  selectedLang === lang
-                    ? "border-b-2 border-navy-600 text-navy-900"
-                    : "text-gray-500 hover:text-gray-700"
-                }`}
-              >
-                {lang === "en" && "🇬🇧 English"}
-                {lang === "pl" && "🇵🇱 Polski"}
-                {lang === "uk" && "🇺🇦 Українська"}
-              </button>
-            ))}
+          {/* Base Section */}
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 space-y-6">
+            <h3 className="text-lg font-semibold text-blue-900 mb-4">
+              Base Information (Required)
+            </h3>
+            <div className="grid md:grid-cols-2 gap-6">
+              {/* Bride Base */}
+              <div className="space-y-4">
+                <h4 className="font-semibold text-gray-900">Bride</h4>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    First Name
+                  </label>
+                  <input
+                    type="text"
+                    value={config.couple.bride.base?.firstName || ""}
+                    onChange={(e) =>
+                      setConfig({
+                        ...config,
+                        couple: {
+                          ...config.couple,
+                          bride: {
+                            ...config.couple.bride,
+                            base: {
+                              ...config.couple.bride.base,
+                              firstName: e.target.value,
+                              fullName: `${e.target.value} ${config.couple.bride.base?.lastName || ""}`,
+                            },
+                          },
+                        },
+                      })
+                    }
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Last Name
+                  </label>
+                  <input
+                    type="text"
+                    value={config.couple.bride.base?.lastName || ""}
+                    onChange={(e) =>
+                      setConfig({
+                        ...config,
+                        couple: {
+                          ...config.couple,
+                          bride: {
+                            ...config.couple.bride,
+                            base: {
+                              ...config.couple.bride.base,
+                              lastName: e.target.value,
+                              fullName: `${config.couple.bride.base?.firstName || ""} ${e.target.value}`,
+                            },
+                          },
+                        },
+                      })
+                    }
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Phone
+                  </label>
+                  <input
+                    type="tel"
+                    value={config.couple.bride.base?.phone || ""}
+                    onChange={(e) =>
+                      setConfig({
+                        ...config,
+                        couple: {
+                          ...config.couple,
+                          bride: {
+                            ...config.couple.bride,
+                            base: {
+                              ...config.couple.bride.base,
+                              phone: e.target.value,
+                            },
+                          },
+                        },
+                      })
+                    }
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    required
+                  />
+                </div>
+              </div>
+
+              {/* Groom Base */}
+              <div className="space-y-4">
+                <h4 className="font-semibold text-gray-900">Groom</h4>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    First Name
+                  </label>
+                  <input
+                    type="text"
+                    value={config.couple.groom.base?.firstName || ""}
+                    onChange={(e) =>
+                      setConfig({
+                        ...config,
+                        couple: {
+                          ...config.couple,
+                          groom: {
+                            ...config.couple.groom,
+                            base: {
+                              ...config.couple.groom.base,
+                              firstName: e.target.value,
+                              fullName: `${e.target.value} ${config.couple.groom.base?.lastName || ""}`,
+                            },
+                          },
+                        },
+                      })
+                    }
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Last Name
+                  </label>
+                  <input
+                    type="text"
+                    value={config.couple.groom.base?.lastName || ""}
+                    onChange={(e) =>
+                      setConfig({
+                        ...config,
+                        couple: {
+                          ...config.couple,
+                          groom: {
+                            ...config.couple.groom,
+                            base: {
+                              ...config.couple.groom.base,
+                              lastName: e.target.value,
+                              fullName: `${config.couple.groom.base?.firstName || ""} ${e.target.value}`,
+                            },
+                          },
+                        },
+                      })
+                    }
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Phone
+                  </label>
+                  <input
+                    type="tel"
+                    value={config.couple.groom.base?.phone || ""}
+                    onChange={(e) =>
+                      setConfig({
+                        ...config,
+                        couple: {
+                          ...config.couple,
+                          groom: {
+                            ...config.couple.groom,
+                            base: {
+                              ...config.couple.groom.base,
+                              phone: e.target.value,
+                            },
+                          },
+                        },
+                      })
+                    }
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Language-Specific Overrides */}
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold text-gray-900">
+              Language-Specific Overrides (Optional)
+            </h3>
+            <p className="text-sm text-gray-600">
+              Only fill in fields that differ from the base information for each
+              language.
+            </p>
+
+            {/* Language Tabs */}
+            <div className="flex gap-2 border-b">
+              {(["en", "pl", "uk"] as Language[]).map((lang) => (
+                <button
+                  key={lang}
+                  onClick={() => setSelectedLang(lang)}
+                  className={`px-4 py-2 font-medium transition-colors ${
+                    selectedLang === lang
+                      ? "border-b-2 border-navy-600 text-navy-900"
+                      : "text-gray-500 hover:text-gray-700"
+                  }`}
+                >
+                  {lang === "en" && "🇬🇧 English"}
+                  {lang === "pl" && "🇵🇱 Polski"}
+                  {lang === "uk" && "🇺🇦 Українська"}
+                </button>
+              ))}
+            </div>
           </div>
 
           <div className="grid md:grid-cols-2 gap-6">
             {/* Bride */}
             <div className="space-y-4">
               <h3 className="font-semibold text-lg text-navy-900">
-                Bride Details
+                Bride Overrides ({selectedLang.toUpperCase()})
               </h3>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  First Name ({selectedLang.toUpperCase()})
+                  First Name (leave empty to use base)
                 </label>
                 <input
                   type="text"
@@ -399,18 +589,21 @@ export default function WeddingConfigEditor({
                           [selectedLang]: {
                             ...config.couple.bride[selectedLang],
                             firstName: e.target.value,
-                            fullName: `${e.target.value} ${config.couple.bride[selectedLang]?.lastName || ""}`,
+                            fullName: e.target.value
+                              ? `${e.target.value} ${config.couple.bride[selectedLang]?.lastName || config.couple.bride.base?.lastName || ""}`
+                              : undefined,
                           },
                         },
                       },
                     })
                   }
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-navy-500 focus:border-transparent"
+                  placeholder={config.couple.bride.base?.firstName || ""}
                 />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Last Name ({selectedLang.toUpperCase()})
+                  Last Name (leave empty to use base)
                 </label>
                 <input
                   type="text"
@@ -425,18 +618,21 @@ export default function WeddingConfigEditor({
                           [selectedLang]: {
                             ...config.couple.bride[selectedLang],
                             lastName: e.target.value,
-                            fullName: `${config.couple.bride[selectedLang]?.firstName || ""} ${e.target.value}`,
+                            fullName: e.target.value
+                              ? `${config.couple.bride[selectedLang]?.firstName || config.couple.bride.base?.firstName || ""} ${e.target.value}`
+                              : undefined,
                           },
                         },
                       },
                     })
                   }
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-navy-500 focus:border-transparent"
+                  placeholder={config.couple.bride.base?.lastName || ""}
                 />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Phone ({selectedLang.toUpperCase()})
+                  Phone (leave empty to use base)
                 </label>
                 <input
                   type="tel"
@@ -457,6 +653,7 @@ export default function WeddingConfigEditor({
                     })
                   }
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-navy-500 focus:border-transparent"
+                  placeholder={config.couple.bride.base?.phone || ""}
                 />
               </div>
             </div>
@@ -464,11 +661,11 @@ export default function WeddingConfigEditor({
             {/* Groom */}
             <div className="space-y-4">
               <h3 className="font-semibold text-lg text-navy-900">
-                Groom Details
+                Groom Overrides ({selectedLang.toUpperCase()})
               </h3>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  First Name ({selectedLang.toUpperCase()})
+                  First Name (leave empty to use base)
                 </label>
                 <input
                   type="text"
@@ -483,18 +680,21 @@ export default function WeddingConfigEditor({
                           [selectedLang]: {
                             ...config.couple.groom[selectedLang],
                             firstName: e.target.value,
-                            fullName: `${e.target.value} ${config.couple.groom[selectedLang]?.lastName || ""}`,
+                            fullName: e.target.value
+                              ? `${e.target.value} ${config.couple.groom[selectedLang]?.lastName || config.couple.groom.base?.lastName || ""}`
+                              : undefined,
                           },
                         },
                       },
                     })
                   }
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-navy-500 focus:border-transparent"
+                  placeholder={config.couple.groom.base?.firstName || ""}
                 />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Last Name ({selectedLang.toUpperCase()})
+                  Last Name (leave empty to use base)
                 </label>
                 <input
                   type="text"
@@ -509,18 +709,21 @@ export default function WeddingConfigEditor({
                           [selectedLang]: {
                             ...config.couple.groom[selectedLang],
                             lastName: e.target.value,
-                            fullName: `${config.couple.groom[selectedLang]?.firstName || ""} ${e.target.value}`,
+                            fullName: e.target.value
+                              ? `${config.couple.groom[selectedLang]?.firstName || config.couple.groom.base?.firstName || ""} ${e.target.value}`
+                              : undefined,
                           },
                         },
                       },
                     })
                   }
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-navy-500 focus:border-transparent"
+                  placeholder={config.couple.groom.base?.lastName || ""}
                 />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Phone ({selectedLang.toUpperCase()})
+                  Phone (leave empty to use base)
                 </label>
                 <input
                   type="tel"
@@ -541,6 +744,7 @@ export default function WeddingConfigEditor({
                     })
                   }
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-navy-500 focus:border-transparent"
+                  placeholder={config.couple.groom.base?.phone || ""}
                 />
               </div>
             </div>
@@ -630,6 +834,115 @@ export default function WeddingConfigEditor({
             Ceremony Location
           </h3>
 
+          {/* Base Ceremony Info */}
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 space-y-4">
+            <h4 className="font-semibold text-blue-900">Base Information</h4>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Time (same for all languages)
+              </label>
+              <input
+                type="text"
+                value={config.ceremony.time}
+                onChange={(e) =>
+                  setConfig({
+                    ...config,
+                    ceremony: { ...config.ceremony, time: e.target.value },
+                  })
+                }
+                placeholder="14:00"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Google Maps URL (same for all languages)
+              </label>
+              <div className="flex gap-2">
+                <input
+                  type="url"
+                  value={config.ceremony.googleMapsUrl}
+                  onChange={(e) =>
+                    setConfig({
+                      ...config,
+                      ceremony: {
+                        ...config.ceremony,
+                        googleMapsUrl: e.target.value,
+                      },
+                    })
+                  }
+                  placeholder="https://maps.google.com/?q=..."
+                  className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+                <a
+                  href={config.ceremony.googleMapsUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors flex items-center gap-2"
+                >
+                  <MapPin size={16} />
+                  Test
+                </a>
+              </div>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Location Name
+              </label>
+              <input
+                type="text"
+                value={config.ceremony.base?.locationName || ""}
+                onChange={(e) =>
+                  setConfig({
+                    ...config,
+                    ceremony: {
+                      ...config.ceremony,
+                      base: {
+                        ...config.ceremony.base,
+                        locationName: e.target.value,
+                      },
+                    },
+                  })
+                }
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Address
+              </label>
+              <input
+                type="text"
+                value={config.ceremony.base?.address || ""}
+                onChange={(e) =>
+                  setConfig({
+                    ...config,
+                    ceremony: {
+                      ...config.ceremony,
+                      base: {
+                        ...config.ceremony.base,
+                        address: e.target.value,
+                      },
+                    },
+                  })
+                }
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                required
+              />
+            </div>
+          </div>
+
+          {/* Language Overrides */}
+          <div className="space-y-4">
+            <h4 className="font-semibold text-gray-900">
+              Language-Specific Overrides
+            </h4>
+            <p className="text-sm text-gray-600">
+              Only fill in fields that differ from the base information.
+            </p>
+          </div>
+
           {/* Language Tabs */}
           <div className="flex gap-2 border-b">
             {(["en", "pl", "uk"] as Language[]).map((lang) => (
@@ -651,24 +964,8 @@ export default function WeddingConfigEditor({
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Time (same for all languages)
-            </label>
-            <input
-              type="text"
-              value={config.ceremony.time}
-              onChange={(e) =>
-                setConfig({
-                  ...config,
-                  ceremony: { ...config.ceremony, time: e.target.value },
-                })
-              }
-              placeholder="14:00"
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-navy-500 focus:border-transparent"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Location Name ({selectedLang.toUpperCase()})
+              Location Name ({selectedLang.toUpperCase()}) - leave empty to use
+              base
             </label>
             <input
               type="text"
@@ -685,12 +982,13 @@ export default function WeddingConfigEditor({
                   },
                 })
               }
+              placeholder={config.ceremony.base?.locationName || ""}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-navy-500 focus:border-transparent"
             />
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Address ({selectedLang.toUpperCase()})
+              Address ({selectedLang.toUpperCase()}) - leave empty to use base
             </label>
             <input
               type="text"
@@ -707,39 +1005,9 @@ export default function WeddingConfigEditor({
                   },
                 })
               }
+              placeholder={config.ceremony.base?.address || ""}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-navy-500 focus:border-transparent"
             />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Google Maps URL (same for all languages)
-            </label>
-            <div className="flex gap-2">
-              <input
-                type="url"
-                value={config.ceremony.googleMapsUrl}
-                onChange={(e) =>
-                  setConfig({
-                    ...config,
-                    ceremony: {
-                      ...config.ceremony,
-                      googleMapsUrl: e.target.value,
-                    },
-                  })
-                }
-                placeholder="https://maps.google.com/?q=..."
-                className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-navy-500 focus:border-transparent"
-              />
-              <a
-                href={config.ceremony.googleMapsUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors flex items-center gap-2"
-              >
-                <MapPin size={16} />
-                Test
-              </a>
-            </div>
           </div>
         </div>
 
@@ -748,6 +1016,98 @@ export default function WeddingConfigEditor({
           <h3 className="font-semibold text-lg text-navy-900">
             Reception Location
           </h3>
+
+          {/* Base Reception Info */}
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 space-y-4">
+            <h4 className="font-semibold text-blue-900">Base Information</h4>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Google Maps URL (same for all languages)
+              </label>
+              <div className="flex gap-2">
+                <input
+                  type="url"
+                  value={config.reception.googleMapsUrl}
+                  onChange={(e) =>
+                    setConfig({
+                      ...config,
+                      reception: {
+                        ...config.reception,
+                        googleMapsUrl: e.target.value,
+                      },
+                    })
+                  }
+                  placeholder="https://maps.google.com/?q=..."
+                  className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+                <a
+                  href={config.reception.googleMapsUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors flex items-center gap-2"
+                >
+                  <MapPin size={16} />
+                  Test
+                </a>
+              </div>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Location Name
+              </label>
+              <input
+                type="text"
+                value={config.reception.base?.locationName || ""}
+                onChange={(e) =>
+                  setConfig({
+                    ...config,
+                    reception: {
+                      ...config.reception,
+                      base: {
+                        ...config.reception.base,
+                        locationName: e.target.value,
+                      },
+                    },
+                  })
+                }
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Address
+              </label>
+              <input
+                type="text"
+                value={config.reception.base?.address || ""}
+                onChange={(e) =>
+                  setConfig({
+                    ...config,
+                    reception: {
+                      ...config.reception,
+                      base: {
+                        ...config.reception.base,
+                        address: e.target.value,
+                      },
+                    },
+                  })
+                }
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                required
+              />
+            </div>
+          </div>
+
+          {/* Language Overrides */}
+          <div className="space-y-4">
+            <h4 className="font-semibold text-gray-900">
+              Language-Specific Overrides
+            </h4>
+            <p className="text-sm text-gray-600">
+              Only fill in fields that differ from the base information.
+            </p>
+          </div>
 
           {/* Same language tabs */}
           <div className="flex gap-2 border-b">
@@ -770,7 +1130,8 @@ export default function WeddingConfigEditor({
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Location Name ({selectedLang.toUpperCase()})
+              Location Name ({selectedLang.toUpperCase()}) - leave empty to use
+              base
             </label>
             <input
               type="text"
@@ -787,12 +1148,13 @@ export default function WeddingConfigEditor({
                   },
                 })
               }
+              placeholder={config.reception.base?.locationName || ""}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-navy-500 focus:border-transparent"
             />
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Address ({selectedLang.toUpperCase()})
+              Address ({selectedLang.toUpperCase()}) - leave empty to use base
             </label>
             <input
               type="text"
@@ -809,39 +1171,9 @@ export default function WeddingConfigEditor({
                   },
                 })
               }
+              placeholder={config.reception.base?.address || ""}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-navy-500 focus:border-transparent"
             />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Google Maps URL (same for all languages)
-            </label>
-            <div className="flex gap-2">
-              <input
-                type="url"
-                value={config.reception.googleMapsUrl}
-                onChange={(e) =>
-                  setConfig({
-                    ...config,
-                    reception: {
-                      ...config.reception,
-                      googleMapsUrl: e.target.value,
-                    },
-                  })
-                }
-                placeholder="https://maps.google.com/?q=..."
-                className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-navy-500 focus:border-transparent"
-              />
-              <a
-                href={config.reception.googleMapsUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors flex items-center gap-2"
-              >
-                <MapPin size={16} />
-                Test
-              </a>
-            </div>
           </div>
         </div>
 
@@ -1028,7 +1360,9 @@ export default function WeddingConfigEditor({
 
       {/* Footer */}
       <div
-        className={`flex items-center gap-3 p-6 border-t bg-gray-50 ${isEmbedded ? "justify-end" : "justify-end"}`}
+        className={`flex items-center gap-3 border-t ${
+          isEmbedded ? "pt-6 justify-end" : "p-6 bg-gray-50 justify-end"
+        }`}
       >
         {!isEmbedded && onClose && (
           <button

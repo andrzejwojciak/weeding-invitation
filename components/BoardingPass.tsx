@@ -49,30 +49,24 @@ export default function BoardingPass({
         bride: {
           firstName:
             coupleConfig.bride[language]?.firstName ||
-            coupleConfig.bride.en?.firstName ||
-            "",
+            coupleConfig.bride.base.firstName,
           fullName:
             coupleConfig.bride[language]?.fullName ||
-            coupleConfig.bride.en?.fullName ||
-            "",
+            coupleConfig.bride.base.fullName,
           phone:
             coupleConfig.bride[language]?.phone ||
-            coupleConfig.bride.en?.phone ||
-            "",
+            coupleConfig.bride.base.phone,
         },
         groom: {
           firstName:
             coupleConfig.groom[language]?.firstName ||
-            coupleConfig.groom.en?.firstName ||
-            "",
+            coupleConfig.groom.base.firstName,
           fullName:
             coupleConfig.groom[language]?.fullName ||
-            coupleConfig.groom.en?.fullName ||
-            "",
+            coupleConfig.groom.base.fullName,
           phone:
             coupleConfig.groom[language]?.phone ||
-            coupleConfig.groom.en?.phone ||
-            "",
+            coupleConfig.groom.base.phone,
         },
       }
     : {
@@ -95,10 +89,9 @@ export default function BoardingPass({
         googleMapsUrl: ceremonyConfig.googleMapsUrl,
         locationName:
           ceremonyConfig[language]?.locationName ||
-          ceremonyConfig.en?.locationName ||
-          "",
+          ceremonyConfig.base.locationName,
         address:
-          ceremonyConfig[language]?.address || ceremonyConfig.en?.address || "",
+          ceremonyConfig[language]?.address || ceremonyConfig.base.address,
       }
     : {
         time: weddingConfig.ceremony.time,
@@ -112,12 +105,9 @@ export default function BoardingPass({
         googleMapsUrl: receptionConfig.googleMapsUrl,
         locationName:
           receptionConfig[language]?.locationName ||
-          receptionConfig.en?.locationName ||
-          "",
+          receptionConfig.base.locationName,
         address:
-          receptionConfig[language]?.address ||
-          receptionConfig.en?.address ||
-          "",
+          receptionConfig[language]?.address || receptionConfig.base.address,
       }
     : {
         googleMapsUrl: "",
