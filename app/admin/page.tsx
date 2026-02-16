@@ -27,6 +27,31 @@ export default function AdminPage() {
   const [copiedSlug, setCopiedSlug] = useState<string | null>(null);
 
   useEffect(() => {
+    // Check localStorage for saved admin key
+    const savedKey = localStorage.getItem("adminSecretKey");
+    if (savedKey) {
+      setSecretKey(savedKey);
+      verifyAuth(savedKey);
+    }
+  }, []);
+
+  const verifyAuth = async (key: string) => {
+    try {
+      const response = await fetch("/api/auth", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ secretKey: key }),
+      });
+
+      if (response.ok) {
+        setAuthenticated(true);
+      }
+    } catch {
+      // Invalid key, do nothing
+    }
+  };
+
+  useEffect(() => {
     if (authenticated) {
       fetchInvitations();
     }
@@ -44,7 +69,7 @@ export default function AdminPage() {
       });
 
       if (response.ok) {
-        sessionStorage.setItem("adminSecretKey", secretKey);
+        localStorage.setItem("adminSecretKey", secretKey);
         setAuthenticated(true);
       } else {
         setError("Invalid credentials");

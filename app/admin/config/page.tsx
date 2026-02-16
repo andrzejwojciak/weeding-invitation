@@ -30,8 +30,8 @@ export default function ConfigPage() {
   };
 
   useEffect(() => {
-    // Check if user has admin secret in sessionStorage
-    const stored = sessionStorage.getItem("adminSecretKey");
+    // Check if user has admin secret in localStorage
+    const stored = localStorage.getItem("adminSecretKey");
     if (stored) {
       setSecretKey(stored);
       verifyAuth(stored);
@@ -51,7 +51,7 @@ export default function ConfigPage() {
       });
 
       if (response.ok) {
-        sessionStorage.setItem("adminSecretKey", secretKey);
+        localStorage.setItem("adminSecretKey", secretKey);
         setAuthenticated(true);
       } else {
         setError("Invalid credentials");
