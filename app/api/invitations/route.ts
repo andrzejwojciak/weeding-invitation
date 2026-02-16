@@ -36,7 +36,7 @@ export async function POST(request: Request) {
 
   try {
     const body = await request.json();
-    const { recipientName } = body;
+    const { recipientName, language } = body;
 
     if (!recipientName || typeof recipientName !== "string") {
       return NextResponse.json(
@@ -45,7 +45,17 @@ export async function POST(request: Request) {
       );
     }
 
-    const invitation = await invitationService.create({ recipientName });
+    if (!language || !["en", "pl", "uk"].includes(language)) {
+      return NextResponse.json(
+        { error: "Invalid language" },
+        { status: 400 },
+      );
+    }
+
+    const invitation = await invitationService.create({ 
+      recipientName,
+      language,
+    });
     return NextResponse.json(invitation, { status: 201 });
   } catch (error) {
     console.error("Failed to create invitation:", error);

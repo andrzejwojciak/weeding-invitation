@@ -163,6 +163,7 @@ export class InvitationService {
       id: uuidv4(),
       slug: this.generateSlug(dto.recipientName),
       recipientName: dto.recipientName,
+      language: dto.language,
       isRead: false,
       createdAt: new Date().toISOString(),
     };

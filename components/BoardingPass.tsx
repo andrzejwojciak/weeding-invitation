@@ -3,12 +3,19 @@
 import { motion } from "framer-motion";
 import { MapPin, Clock, Phone, Gift, Wine, QrCode } from "lucide-react";
 import { weddingConfig, getCoupleNames } from "@/lib/config/wedding";
+import { getTranslation, type Language } from "@/lib/i18n/locales";
 
 interface BoardingPassProps {
   recipientName: string;
+  language: Language;
 }
 
-export default function BoardingPass({ recipientName }: BoardingPassProps) {
+export default function BoardingPass({
+  recipientName,
+  language,
+}: BoardingPassProps) {
+  const t = getTranslation(language);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-navy-900 via-navy-800 to-slate-800 flex items-center justify-center p-4 py-12">
       <motion.div
@@ -23,9 +30,11 @@ export default function BoardingPass({ recipientName }: BoardingPassProps) {
           <div className="bg-gradient-to-r from-navy-800 to-navy-600 px-8 py-6 text-white">
             <div className="flex items-center justify-between mb-2">
               <div className="text-sm font-light tracking-widest">
-                WEDDING BOARDING PASS
+                {t.boardingPass.header}
               </div>
-              <div className="text-sm font-mono">WED-2026</div>
+              <div className="text-sm font-mono">
+                {t.boardingPass.flightNumber}
+              </div>
             </div>
             <h1 className="text-3xl md:text-4xl font-serif text-center my-4">
               {getCoupleNames("full")}
@@ -41,7 +50,7 @@ export default function BoardingPass({ recipientName }: BoardingPassProps) {
               {/* Passenger */}
               <div className="mb-8">
                 <div className="text-xs text-gray-500 uppercase tracking-wide mb-1">
-                  Passenger Name
+                  {t.boardingPass.passengerName}
                 </div>
                 <div className="text-2xl font-semibold text-navy-900">
                   {recipientName}
@@ -59,7 +68,7 @@ export default function BoardingPass({ recipientName }: BoardingPassProps) {
                     />
                     <div className="flex-1">
                       <div className="text-xs text-gray-500 uppercase tracking-wide">
-                        Departure - Ceremony
+                        {t.boardingPass.departure} - {t.boardingPass.ceremony}
                       </div>
                       <div className="text-xl font-bold text-navy-900">
                         {weddingConfig.ceremony.time}
@@ -84,10 +93,10 @@ export default function BoardingPass({ recipientName }: BoardingPassProps) {
                     />
                     <div className="flex-1">
                       <div className="text-xs text-gray-500 uppercase tracking-wide">
-                        Arrival - Reception
+                        {t.boardingPass.arrival} - {t.boardingPass.reception}
                       </div>
                       <div className="text-xl font-bold text-navy-900">
-                        Following Ceremony
+                        {t.boardingPass.followingCeremony}
                       </div>
                       <div className="text-sm font-medium text-gray-700 mt-1">
                         {weddingConfig.reception.locationName}
@@ -104,10 +113,10 @@ export default function BoardingPass({ recipientName }: BoardingPassProps) {
               {/* RSVP Section */}
               <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6">
                 <div className="text-xs text-amber-900 uppercase tracking-wide mb-2 font-semibold">
-                  ⚠ Important - RSVP Required
+                  ⚠ {t.boardingPass.importantInfo} - {t.boardingPass.rsvp}
                 </div>
                 <div className="text-sm text-gray-700">
-                  Please confirm your attendance by{" "}
+                  {t.boardingPass.rsvpDescription}{" "}
                   <span className="font-semibold text-navy-900">
                     {weddingConfig.rsvp.deadline}
                   </span>
@@ -204,11 +213,15 @@ export default function BoardingPass({ recipientName }: BoardingPassProps) {
               {/* Seat/Gate Info */}
               <div className="grid grid-cols-2 gap-3 w-full">
                 <div className="bg-white p-3 rounded-lg text-center shadow-sm">
-                  <div className="text-xs text-gray-500">Gate</div>
+                  <div className="text-xs text-gray-500">
+                    {t.boardingPass.gate}
+                  </div>
                   <div className="text-lg font-bold text-navy-900">❤</div>
                 </div>
                 <div className="bg-white p-3 rounded-lg text-center shadow-sm">
-                  <div className="text-xs text-gray-500">Class</div>
+                  <div className="text-xs text-gray-500">
+                    {t.boardingPass.seat}
+                  </div>
                   <div className="text-lg font-bold text-navy-900">VIP</div>
                 </div>
               </div>

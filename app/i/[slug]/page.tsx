@@ -123,6 +123,7 @@ export default function InvitationPage() {
             <Envelope
               onOpen={handleEnvelopeOpen}
               recipientName={invitation.recipientName}
+              language={invitation.language}
             />
           </motion.div>
         )}
@@ -134,7 +135,10 @@ export default function InvitationPage() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8 }}
           >
-            <BoardingPass recipientName={invitation.recipientName} />
+            <BoardingPass
+              recipientName={invitation.recipientName}
+              language={invitation.language}
+            />
           </motion.div>
         )}
       </AnimatePresence>

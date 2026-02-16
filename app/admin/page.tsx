@@ -10,12 +10,14 @@ import {
   Trash2,
 } from "lucide-react";
 import type { Invitation } from "@/lib/types/invitation";
+import { languages, type Language } from "@/lib/i18n/locales";
 
 export default function AdminPage() {
   const [authenticated, setAuthenticated] = useState(false);
   const [secretKey, setSecretKey] = useState("");
   const [invitations, setInvitations] = useState<Invitation[]>([]);
   const [newRecipientName, setNewRecipientName] = useState("");
+  const [selectedLanguage, setSelectedLanguage] = useState<Language>("en");
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState("");
@@ -81,11 +83,15 @@ export default function AdminPage() {
           "Content-Type": "application/json",
           Authorization: `Bearer ${secretKey}`,
         },
-        body: JSON.stringify({ recipientName: newRecipientName }),
+        body: JSON.stringify({
+          recipientName: newRecipientName,
+          language: selectedLanguage,
+        }),
       });
 
       if (response.ok) {
         setNewRecipientName("");
+        setSelectedLanguage("en");
         await fetchInvitations();
       } else {
         setError("Failed to create invitation");
@@ -208,6 +214,19 @@ export default function AdminPage() {
                 className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-navy-500 focus:border-transparent"
                 required
               />
+              <select
+                value={selectedLanguage}
+                onChange={(e) =>
+                  setSelectedLanguage(e.target.value as Language)
+                }
+                className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-navy-500 focus:border-transparent bg-white min-w-[180px]"
+              >
+                {languages.map((lang) => (
+                  <option key={lang.code} value={lang.code}>
+                    {lang.flag} {lang.name}
+                  </option>
+                ))}
+              </select>
               <button
                 type="submit"
                 disabled={loading}
@@ -232,6 +251,9 @@ export default function AdminPage() {
                     Guest Name
                   </th>
                   <th className="text-left py-3 px-4 font-semibold text-gray-700">
+                    Language
+                  </th>
+                  <th className="text-left py-3 px-4 font-semibold text-gray-700">
                     Status
                   </th>
                   <th className="text-left py-3 px-4 font-semibold text-gray-700">
@@ -245,7 +267,7 @@ export default function AdminPage() {
               <tbody>
                 {invitations.length === 0 ? (
                   <tr>
-                    <td colSpan={4} className="text-center py-8 text-gray-500">
+                    <td colSpan={5} className="text-center py-8 text-gray-500">
                       No invitations yet. Create your first one above.
                     </td>
                   </tr>
@@ -257,6 +279,17 @@ export default function AdminPage() {
                     >
                       <td className="py-3 px-4 font-medium">
                         {invitation.recipientName}
+                      </td>
+                      <td className="py-3 px-4">
+                        <span className="text-sm">
+                          {
+                            languages.find(
+                              (l) => l.code === invitation.language,
+                            )?.flag
+                          }{" "}
+                          {languages.find((l) => l.code === invitation.language)
+                            ?.name || invitation.language}
+                        </span>
                       </td>
                       <td className="py-3 px-4">
                         <span

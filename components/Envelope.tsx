@@ -2,14 +2,21 @@
 
 import { motion } from "framer-motion";
 import { getCoupleInitials } from "@/lib/config/wedding";
+import { getTranslation, type Language } from "@/lib/i18n/locales";
 
 interface EnvelopeProps {
   onOpen: () => void;
   recipientName: string;
+  language: Language;
 }
 
-export default function Envelope({ onOpen, recipientName }: EnvelopeProps) {
+export default function Envelope({
+  onOpen,
+  recipientName,
+  language,
+}: EnvelopeProps) {
   const initials = getCoupleInitials();
+  const t = getTranslation(language);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-navy-900 via-navy-800 to-slate-800 flex items-center justify-center p-4">
@@ -21,10 +28,10 @@ export default function Envelope({ onOpen, recipientName }: EnvelopeProps) {
           className="mb-8"
         >
           <h2 className="text-2xl md:text-3xl text-white font-serif mb-2">
-            Dear {recipientName}
+            {t.envelope.dear} {recipientName}
           </h2>
           <p className="text-gray-300 text-sm md:text-base">
-            You have received a special invitation
+            {t.envelope.subtitle}
           </p>
         </motion.div>
 
@@ -87,7 +94,7 @@ export default function Envelope({ onOpen, recipientName }: EnvelopeProps) {
             transition={{ delay: 1 }}
             className="mt-8 text-white text-sm md:text-base font-light tracking-wide"
           >
-            Click to open
+            {t.envelope.clickToOpen}
           </motion.p>
         </motion.button>
       </div>
