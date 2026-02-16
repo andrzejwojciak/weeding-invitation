@@ -40,7 +40,7 @@ export default function BoardingPass({
               {getCoupleNames("full")}
             </h1>
             <div className="text-center text-sm tracking-wide opacity-90">
-              {weddingConfig.date.full}
+              {t.dates.weddingDate}
             </div>
           </div>
 
@@ -118,7 +118,7 @@ export default function BoardingPass({
                 <div className="text-sm text-gray-700">
                   {t.boardingPass.rsvpDescription}{" "}
                   <span className="font-semibold text-navy-900">
-                    {weddingConfig.rsvp.deadline}
+                    {t.dates.rsvpDeadline}
                   </span>
                 </div>
                 <div className="mt-3 space-y-1">
@@ -153,11 +153,11 @@ export default function BoardingPass({
               <div className="flex items-center gap-4 text-sm text-gray-600">
                 <div className="flex items-center gap-2">
                   <Gift size={18} className="text-navy-600" />
-                  <span>Monetary Gift Appreciated</span>
+                  <span>{t.boardingPass.monetaryGift}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Wine size={18} className="text-burgundy-600" />
-                  <span>Wine & Spirits Welcome</span>
+                  <span>{t.boardingPass.wineSpirits}</span>
                 </div>
               </div>
             </div>

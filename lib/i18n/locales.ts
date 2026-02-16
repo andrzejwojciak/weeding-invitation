@@ -7,6 +7,11 @@ export interface TranslationKeys {
     subtitle: string;
     clickToOpen: string;
   };
+  // Dates
+  dates: {
+    weddingDate: string;
+    rsvpDeadline: string;
+  };
   // Boarding Pass
   boardingPass: {
     header: string;
@@ -24,6 +29,8 @@ export interface TranslationKeys {
     contactDescription: string;
     giftRegistry: string;
     giftDescription: string;
+    monetaryGift: string;
+    wineSpirits: string;
     dresscode: string;
     dresscodeDescription: string;
     boarding: string;
@@ -62,6 +69,10 @@ export const translations: Record<Language, TranslationKeys> = {
       subtitle: "You have received a special invitation",
       clickToOpen: "Click to open",
     },
+    dates: {
+      weddingDate: "June 13, 2026",
+      rsvpDeadline: "May 23, 2026",
+    },
     boardingPass: {
       header: "WEDDING BOARDING PASS",
       flightNumber: "WED-2026",
@@ -79,6 +90,8 @@ export const translations: Record<Language, TranslationKeys> = {
       giftRegistry: "Gift Registry",
       giftDescription:
         "Your presence is our present, but if you wish to honor us with a gift, we would appreciate a contribution to our future together",
+      monetaryGift: "Monetary Gift Appreciated",
+      wineSpirits: "Wine & Spirits Welcome",
       dresscode: "Dress Code",
       dresscodeDescription: "Formal / Elegant attire",
       boarding: "Boarding",
@@ -114,6 +127,10 @@ export const translations: Record<Language, TranslationKeys> = {
       subtitle: "Otrzymałeś/-aś specjalne zaproszenie",
       clickToOpen: "Kliknij, aby otworzyć",
     },
+    dates: {
+      weddingDate: "13 czerwca 2026",
+      rsvpDeadline: "23 maja 2026",
+    },
     boardingPass: {
       header: "KARTA POKŁADOWA ŚLUBU",
       flightNumber: "ŚLB-2026",
@@ -131,6 +148,8 @@ export const translations: Record<Language, TranslationKeys> = {
       giftRegistry: "Lista prezentów",
       giftDescription:
         "Wasza obecność to najlepszy prezent, ale jeśli chcecie nas obdarować, będziemy wdzięczni za wkład w naszą wspólną przyszłość",
+      monetaryGift: "Prezent pieniężny mile widziany",
+      wineSpirits: "Wino i alkohole mile widziane",
       dresscode: "Dress code",
       dresscodeDescription: "Strój elegancki / formalny",
       boarding: "Boarding",
@@ -166,6 +185,10 @@ export const translations: Record<Language, TranslationKeys> = {
       subtitle: "Ви отримали спеціальне запрошення",
       clickToOpen: "Натисніть, щоб відкрити",
     },
+    dates: {
+      weddingDate: "13 червня 2026",
+      rsvpDeadline: "23 травня 2026",
+    },
     boardingPass: {
       header: "ПОСАДКОВИЙ ТАЛОН НА ВЕСІЛЛЯ",
       flightNumber: "ВЕС-2026",
@@ -183,6 +206,8 @@ export const translations: Record<Language, TranslationKeys> = {
       giftRegistry: "Список подарунків",
       giftDescription:
         "Ваша присутність - найкращий подарунок, але якщо ви бажаєте нас обдарувати, ми будемо вдячні за внесок у наше спільне майбутнє",
+      monetaryGift: "Грошовий подарунок вітається",
+      wineSpirits: "Вино і алкоголь вітаються",
       dresscode: "Дрес-код",
       dresscodeDescription: "Елегантний / офіційний одяг",
       boarding: "Посадка",
