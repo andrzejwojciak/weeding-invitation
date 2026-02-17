@@ -44,6 +44,13 @@ export interface LocalizedPerson {
   };
 }
 
+export interface LocalizedText {
+  base: string;
+  en?: string;
+  pl?: string;
+  uk?: string;
+}
+
 export interface EditableWeddingConfig {
   couple: {
     bride: LocalizedPerson;
@@ -61,6 +68,7 @@ export interface EditableWeddingConfig {
     month: number; // 1-12
     day: number;
   };
+  dressCode?: LocalizedText;
   groupQrCode?: {
     en?: string; // base64 or URL
     pl?: string; // base64 or URL

@@ -349,6 +349,15 @@ export default function BoardingPass({
                     <span>{t.boardingPass.wineSpirits}</span>
                   </div>
                 </div>
+
+                {/* Dress Code */}
+                {config?.dressCode?.base && (
+                  <div className="mt-4 p-3 bg-cream-50 border border-cream-200 rounded-lg">
+                    <p className="text-sm text-gray-700">
+                      {config.dressCode[language] || config.dressCode.base}
+                    </p>
+                  </div>
+                )}
               </div>
             </div>
 

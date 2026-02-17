@@ -1177,6 +1177,87 @@ export default function WeddingConfigEditor({
           </div>
         </div>
 
+        {/* Dress Code */}
+        <div className="space-y-4 border-t pt-6">
+          <h3 className="font-semibold text-lg text-navy-900">
+            Dress Code (Optional)
+          </h3>
+          <p className="text-sm text-gray-600">
+            Request for specific colors - leave empty to hide this section
+          </p>
+
+          {/* Base Dress Code */}
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 space-y-4">
+            <h4 className="font-semibold text-blue-900">Base Text</h4>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Dress Code Request
+              </label>
+              <textarea
+                value={config.dressCode?.base || ""}
+                onChange={(e) =>
+                  setConfig({
+                    ...config,
+                    dressCode: config.dressCode
+                      ? { ...config.dressCode, base: e.target.value }
+                      : { base: e.target.value },
+                  })
+                }
+                placeholder="e.g., We kindly request colors: navy blue, burgundy, and cream"
+                rows={3}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
+          </div>
+
+          {/* Language Overrides */}
+          {config.dressCode?.base && (
+            <div className="space-y-4">
+              <h4 className="font-semibold text-gray-900">
+                Language-Specific Overrides
+              </h4>
+              <div className="flex gap-2 border-b">
+                {(["en", "pl", "uk"] as Language[]).map((lang) => (
+                  <button
+                    key={lang}
+                    onClick={() => setSelectedLang(lang)}
+                    className={`px-4 py-2 font-medium transition-colors ${
+                      selectedLang === lang
+                        ? "border-b-2 border-navy-600 text-navy-900"
+                        : "text-gray-500 hover:text-gray-700"
+                    }`}
+                  >
+                    {lang === "en" && "🇬🇧 English"}
+                    {lang === "pl" && "🇵🇱 Polski"}
+                    {lang === "uk" && "🇺🇦 Українська"}
+                  </button>
+                ))}
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Dress Code ({selectedLang.toUpperCase()}) - leave empty to use
+                  base
+                </label>
+                <textarea
+                  value={config.dressCode?.[selectedLang] || ""}
+                  onChange={(e) =>
+                    setConfig({
+                      ...config,
+                      dressCode: {
+                        ...config.dressCode!,
+                        [selectedLang]: e.target.value,
+                      },
+                    })
+                  }
+                  placeholder={config.dressCode?.base || ""}
+                  rows={3}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-navy-500 focus:border-transparent"
+                />
+              </div>
+            </div>
+          )}
+        </div>
+
         {/* Background Image Upload */}
         <div className="space-y-4 border-t pt-6">
           <h3 className="font-semibold text-lg text-navy-900">
