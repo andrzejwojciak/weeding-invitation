@@ -15,18 +15,20 @@ export default async function Home() {
     const config = await configService.getConfig();
 
     if (config?.couple) {
-      // Use Polish names as default, fallback to Ukrainian, then English
+      // Priority: base -> Polish -> Ukrainian -> English
       const brideName =
+        config.couple.bride.base?.firstName ||
         config.couple.bride.pl?.firstName?.trim() ||
         config.couple.bride.uk?.firstName?.trim() ||
         config.couple.bride.en?.firstName?.trim() ||
-        config.couple.bride.base.firstName;
+        weddingConfig.couple.bride.firstName;
 
       const groomName =
+        config.couple.groom.base?.firstName ||
         config.couple.groom.pl?.firstName?.trim() ||
         config.couple.groom.uk?.firstName?.trim() ||
         config.couple.groom.en?.firstName?.trim() ||
-        config.couple.groom.base.firstName;
+        weddingConfig.couple.groom.firstName;
 
       coupleNames = `${brideName} & ${groomName}`;
     }

@@ -50,47 +50,54 @@ export default function BoardingPass({
   const backgroundPosition = config?.backgroundPosition || "main-section";
 
   // Get localized couple data with fallback
+  // Priority: current language -> base -> other languages
   const coupleData = coupleConfig
     ? {
         bride: {
           firstName:
             coupleConfig.bride[language]?.firstName?.trim() ||
+            coupleConfig.bride.base?.firstName ||
             coupleConfig.bride.pl?.firstName?.trim() ||
             coupleConfig.bride.uk?.firstName?.trim() ||
             coupleConfig.bride.en?.firstName?.trim() ||
-            coupleConfig.bride.base.firstName,
+            weddingConfig.couple.bride.firstName,
           fullName:
             coupleConfig.bride[language]?.fullName?.trim() ||
+            coupleConfig.bride.base?.fullName ||
             coupleConfig.bride.pl?.fullName?.trim() ||
             coupleConfig.bride.uk?.fullName?.trim() ||
             coupleConfig.bride.en?.fullName?.trim() ||
-            coupleConfig.bride.base.fullName,
+            weddingConfig.couple.bride.fullName,
           phone:
             coupleConfig.bride[language]?.phone?.trim() ||
+            coupleConfig.bride.base?.phone ||
             coupleConfig.bride.pl?.phone?.trim() ||
             coupleConfig.bride.uk?.phone?.trim() ||
             coupleConfig.bride.en?.phone?.trim() ||
-            coupleConfig.bride.base.phone,
+            weddingConfig.couple.bride.phone,
         },
         groom: {
           firstName:
             coupleConfig.groom[language]?.firstName?.trim() ||
+            coupleConfig.groom.base?.firstName ||
             coupleConfig.groom.pl?.firstName?.trim() ||
             coupleConfig.groom.uk?.firstName?.trim() ||
             coupleConfig.groom.en?.firstName?.trim() ||
-            coupleConfig.groom.base.firstName,
+            weddingConfig.couple.groom.firstName,
           fullName:
             coupleConfig.groom[language]?.fullName?.trim() ||
+            coupleConfig.groom.base?.fullName ||
             coupleConfig.groom.pl?.fullName?.trim() ||
             coupleConfig.groom.uk?.fullName?.trim() ||
             coupleConfig.groom.en?.fullName?.trim() ||
-            coupleConfig.groom.base.fullName,
+            weddingConfig.couple.groom.fullName,
           phone:
             coupleConfig.groom[language]?.phone?.trim() ||
+            coupleConfig.groom.base?.phone ||
             coupleConfig.groom.pl?.phone?.trim() ||
             coupleConfig.groom.uk?.phone?.trim() ||
             coupleConfig.groom.en?.phone?.trim() ||
-            coupleConfig.groom.base.phone,
+            weddingConfig.couple.groom.phone,
         },
       }
     : {
@@ -107,22 +114,25 @@ export default function BoardingPass({
       };
 
   // Get localized ceremony and reception data with fallback
+  // Priority: current language -> base -> other languages
   const ceremonyData = ceremonyConfig
     ? {
         time: ceremonyConfig.time,
         googleMapsUrl: ceremonyConfig.googleMapsUrl,
         locationName:
           ceremonyConfig[language]?.locationName?.trim() ||
+          ceremonyConfig.base?.locationName ||
           ceremonyConfig.pl?.locationName?.trim() ||
           ceremonyConfig.uk?.locationName?.trim() ||
           ceremonyConfig.en?.locationName?.trim() ||
-          ceremonyConfig.base.locationName,
+          weddingConfig.ceremony.locationName,
         address:
           ceremonyConfig[language]?.address?.trim() ||
+          ceremonyConfig.base?.address ||
           ceremonyConfig.pl?.address?.trim() ||
           ceremonyConfig.uk?.address?.trim() ||
           ceremonyConfig.en?.address?.trim() ||
-          ceremonyConfig.base.address,
+          weddingConfig.ceremony.address,
       }
     : {
         time: weddingConfig.ceremony.time,
@@ -136,16 +146,18 @@ export default function BoardingPass({
         googleMapsUrl: receptionConfig.googleMapsUrl,
         locationName:
           receptionConfig[language]?.locationName?.trim() ||
+          receptionConfig.base?.locationName ||
           receptionConfig.pl?.locationName?.trim() ||
           receptionConfig.uk?.locationName?.trim() ||
           receptionConfig.en?.locationName?.trim() ||
-          receptionConfig.base.locationName,
+          weddingConfig.reception.locationName,
         address:
           receptionConfig[language]?.address?.trim() ||
+          receptionConfig.base?.address ||
           receptionConfig.pl?.address?.trim() ||
           receptionConfig.uk?.address?.trim() ||
           receptionConfig.en?.address?.trim() ||
-          receptionConfig.base.address,
+          weddingConfig.reception.address,
       }
     : {
         googleMapsUrl: "",
