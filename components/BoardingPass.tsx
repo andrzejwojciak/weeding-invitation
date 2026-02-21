@@ -12,19 +12,25 @@ import {
   ExternalLink,
 } from "lucide-react";
 import { weddingConfig } from "@/lib/config/wedding";
-import { getTranslation, formatDate, type Language } from "@/lib/i18n/locales";
+import {
+  formatDate,
+  type Language,
+  type TranslationKeys,
+} from "@/lib/i18n/locales";
 import type { EditableWeddingConfig } from "@/lib/types/wedding-config";
 
 interface BoardingPassProps {
   recipientName: string;
   language: Language;
+  translations: TranslationKeys;
 }
 
 export default function BoardingPass({
   recipientName,
   language,
+  translations,
 }: BoardingPassProps) {
-  const t = getTranslation(language);
+  const t = translations;
   const [config, setConfig] = useState<EditableWeddingConfig | null>(null);
 
   useEffect(() => {
@@ -43,29 +49,47 @@ export default function BoardingPass({
   const backgroundImage = config?.backgroundImage;
   const backgroundPosition = config?.backgroundPosition || "main-section";
 
-  // Get localized couple data
+  // Get localized couple data with fallback
   const coupleData = coupleConfig
     ? {
         bride: {
           firstName:
-            coupleConfig.bride[language]?.firstName ||
+            coupleConfig.bride[language]?.firstName?.trim() ||
+            coupleConfig.bride.pl?.firstName?.trim() ||
+            coupleConfig.bride.uk?.firstName?.trim() ||
+            coupleConfig.bride.en?.firstName?.trim() ||
             coupleConfig.bride.base.firstName,
           fullName:
-            coupleConfig.bride[language]?.fullName ||
+            coupleConfig.bride[language]?.fullName?.trim() ||
+            coupleConfig.bride.pl?.fullName?.trim() ||
+            coupleConfig.bride.uk?.fullName?.trim() ||
+            coupleConfig.bride.en?.fullName?.trim() ||
             coupleConfig.bride.base.fullName,
           phone:
-            coupleConfig.bride[language]?.phone ||
+            coupleConfig.bride[language]?.phone?.trim() ||
+            coupleConfig.bride.pl?.phone?.trim() ||
+            coupleConfig.bride.uk?.phone?.trim() ||
+            coupleConfig.bride.en?.phone?.trim() ||
             coupleConfig.bride.base.phone,
         },
         groom: {
           firstName:
-            coupleConfig.groom[language]?.firstName ||
+            coupleConfig.groom[language]?.firstName?.trim() ||
+            coupleConfig.groom.pl?.firstName?.trim() ||
+            coupleConfig.groom.uk?.firstName?.trim() ||
+            coupleConfig.groom.en?.firstName?.trim() ||
             coupleConfig.groom.base.firstName,
           fullName:
-            coupleConfig.groom[language]?.fullName ||
+            coupleConfig.groom[language]?.fullName?.trim() ||
+            coupleConfig.groom.pl?.fullName?.trim() ||
+            coupleConfig.groom.uk?.fullName?.trim() ||
+            coupleConfig.groom.en?.fullName?.trim() ||
             coupleConfig.groom.base.fullName,
           phone:
-            coupleConfig.groom[language]?.phone ||
+            coupleConfig.groom[language]?.phone?.trim() ||
+            coupleConfig.groom.pl?.phone?.trim() ||
+            coupleConfig.groom.uk?.phone?.trim() ||
+            coupleConfig.groom.en?.phone?.trim() ||
             coupleConfig.groom.base.phone,
         },
       }
@@ -82,16 +106,23 @@ export default function BoardingPass({
         },
       };
 
-  // Get localized ceremony and reception data
+  // Get localized ceremony and reception data with fallback
   const ceremonyData = ceremonyConfig
     ? {
         time: ceremonyConfig.time,
         googleMapsUrl: ceremonyConfig.googleMapsUrl,
         locationName:
-          ceremonyConfig[language]?.locationName ||
+          ceremonyConfig[language]?.locationName?.trim() ||
+          ceremonyConfig.pl?.locationName?.trim() ||
+          ceremonyConfig.uk?.locationName?.trim() ||
+          ceremonyConfig.en?.locationName?.trim() ||
           ceremonyConfig.base.locationName,
         address:
-          ceremonyConfig[language]?.address || ceremonyConfig.base.address,
+          ceremonyConfig[language]?.address?.trim() ||
+          ceremonyConfig.pl?.address?.trim() ||
+          ceremonyConfig.uk?.address?.trim() ||
+          ceremonyConfig.en?.address?.trim() ||
+          ceremonyConfig.base.address,
       }
     : {
         time: weddingConfig.ceremony.time,
@@ -104,10 +135,17 @@ export default function BoardingPass({
     ? {
         googleMapsUrl: receptionConfig.googleMapsUrl,
         locationName:
-          receptionConfig[language]?.locationName ||
+          receptionConfig[language]?.locationName?.trim() ||
+          receptionConfig.pl?.locationName?.trim() ||
+          receptionConfig.uk?.locationName?.trim() ||
+          receptionConfig.en?.locationName?.trim() ||
           receptionConfig.base.locationName,
         address:
-          receptionConfig[language]?.address || receptionConfig.base.address,
+          receptionConfig[language]?.address?.trim() ||
+          receptionConfig.pl?.address?.trim() ||
+          receptionConfig.uk?.address?.trim() ||
+          receptionConfig.en?.address?.trim() ||
+          receptionConfig.base.address,
       }
     : {
         googleMapsUrl: "",
@@ -438,10 +476,7 @@ export default function BoardingPass({
 
             {/* Footer */}
             <div className="bg-gradient-to-r from-navy-800 to-navy-600 px-8 py-4 text-center text-white text-xs">
-              <p className="opacity-80">
-                We can&apos;t wait to celebrate this special day with you! •
-                Please arrive 15 minutes early
-              </p>
+              <p className="opacity-80">{t.boardingPass.footer}</p>
             </div>
           </div>
         </div>

@@ -2,21 +2,21 @@
 
 import { motion } from "framer-motion";
 import { getCoupleInitials } from "@/lib/config/wedding";
-import { getTranslation, type Language } from "@/lib/i18n/locales";
+import type { TranslationKeys } from "@/lib/i18n/locales";
 
 interface EnvelopeProps {
   onOpen: () => void;
   recipientName: string;
-  language: Language;
+  translations: TranslationKeys;
 }
 
 export default function Envelope({
   onOpen,
   recipientName,
-  language,
+  translations,
 }: EnvelopeProps) {
   const initials = getCoupleInitials();
-  const t = getTranslation(language);
+  const t = translations;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-navy-900 via-navy-800 to-slate-800 flex items-center justify-center p-4">

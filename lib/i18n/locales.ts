@@ -39,6 +39,7 @@ export interface TranslationKeys {
     gate: string;
     scanToJoin: string;
     chatGroup: string;
+    footer: string;
   };
   // Admin Panel
   admin: {
@@ -102,6 +103,8 @@ export const translations: Record<Language, TranslationKeys> = {
       gate: "Gate",
       scanToJoin: "Scan to join",
       chatGroup: "Chat Group",
+      footer:
+        "We can't wait to celebrate this special day with you! • Please arrive 15 minutes early",
     },
     admin: {
       title: "Wedding Invitations Admin",
@@ -162,6 +165,8 @@ export const translations: Record<Language, TranslationKeys> = {
       gate: "Bramka",
       scanToJoin: "Zeskanuj, aby dołączyć",
       chatGroup: "Grupa czatu",
+      footer:
+        "Nie możemy się doczekać, aby świętować z Wami ten wyjątkowy dzień! • Prosimy o przybycie 15 minut wcześniej",
     },
     admin: {
       title: "Panel Zarządzania Zaproszeniami",
@@ -222,6 +227,8 @@ export const translations: Record<Language, TranslationKeys> = {
       gate: "Ворота",
       scanToJoin: "Скануйте, щоб приєднатися",
       chatGroup: "Група чату",
+      footer:
+        "Ми з нетерпінням чекаємо, щоб відсвяткувати цей особливий день з вами! • Будь ласка, прибудьте за 15 хвилин до початку",
     },
     admin: {
       title: "Панель управління запрошеннями",
